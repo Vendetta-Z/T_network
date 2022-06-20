@@ -1,0 +1,256 @@
+body{
+    margin:0;
+    padding:0;
+}
+.top_div{
+    width:80%;
+    margin: 10px auto;
+    height:140px;
+
+    background-color:grey;
+}
+
+.user_profile_picture{
+    width: 20%;
+    height: 180px;
+    display: inline-block;
+    margin: 5px;
+}
+
+.user_profile_picture img{
+    width:230px;
+    display:inline-block;
+
+}
+
+.user_info_block{
+    width: 40%;
+    position: relative;
+    left: 20%;
+    vertical-align: center;
+    height: 100px;
+    display: inline-block;
+    background-color: red;
+}
+
+.user_first_name{
+    display:inline-block;
+    width:80px;
+    height:20px;
+    font-size: 2rem;
+    background-color:red;
+}
+
+.new_post_button_background_cover{
+    display: none;
+    position: absolute;
+    top: 0;
+    z-index: 4;
+    opacity: .4;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.create_new_post_main_div{
+    display: none;
+    width: 40em;
+    height: 20em;
+    z-index: 4;
+    border: 4px solid rgb(59, 179, 79);
+    border-radius: 10px;
+    position: absolute;
+    top: 15em;
+    right: 40em;
+    background-color: rgb(138, 138, 138);
+}
+
+.create_new_post_main_div p{
+    font-size: 25px;
+    margin: 3px auto;
+    text-align: center;
+}
+
+.create_new_post_main_div input[type="file"]{
+    width: 50%;
+    position: relative;
+    left: 30%;
+    margin:5px;
+}
+
+.create_new_post_main_div textarea[type="text"]{
+    width:70%;
+    height: 50%;
+    margin:5px auto;
+    position: relative;
+    left:15%;
+}
+
+.create_new_post_main_div button{
+    width: 50%;
+    height: 10%;
+    position: relative;
+    top: 10%;
+    left: 25%;
+    background-color:rgb(59, 179, 79) ;
+    border-radius: 5px;
+}
+
+.create_new_post_main_div button:hover{
+    cursor: pointer;
+    background-color: black;
+    color: rgb(59, 179, 79);
+    transition: 0.4s;
+}
+
+.notification_popup_main_div{
+    width: 30%;
+    height: 10vh auto;
+    padding:5px;
+    color:white;
+    background-color: rgb(105, 105, 105);
+    border:4px solid black;
+    border-radius: 5px;
+    position:absolute;
+    top: 3em;
+    right: 1em;
+    display: none;
+}
+
+.posts{
+    width: 90%;
+    height: auto;
+    margin: 5px auto;
+    padding: 10px auto;
+    background-color:grey;
+}
+
+.block_with_posts{
+    background-color: aqua;
+    width: 32%;
+    height: 40vh;
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+}
+
+.block_with_posts:hover{
+    background-color:rgb(96, 155, 155) ;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+.block_with_posts img{
+    width: 100%;
+    height:31vh;
+}
+.block_with_posts h4{
+    width: 60%;
+    display: inline-block;
+    word-wrap: break-word;
+}
+
+.post_like_and_save_btn_div{
+    width: 35%;
+    display: inline-block;
+}
+
+.popup_for_more_about_post{
+    display: none;
+    width: 60%;
+    height: 70vh;
+    background-color: red;
+    position: fixed;
+    left: 25em ;
+    top: 10em;
+    border: 4px solid rgb(66, 65, 65);
+    border-radius:5px;
+}
+
+.description_and_image_in_popup{
+    width: 60%;
+    height: 100%;
+    background-color: white;
+    display: inline-block;
+}
+
+.description_and_image_in_popup img{
+    width: 100%;
+}
+
+.description_and_image_in_popup p{
+    width: 100%;
+    height: auto;
+    margin: 5px;
+    padding: 4px;
+    font-size:1.8em;
+    word-wrap: break-word;
+}
+
+.likes_and_comments_in_popup{
+    width: 40%;
+    height: 100%;
+    position: absolute;
+    background-color: grey;
+    display: inline-block;
+}
+
+
+.buttons_in_popup{
+    position: relative;
+    width: 100%;
+    height: 5vh;
+    background-color: grey;
+}
+
+.buttons_in_popup input{
+    text-decoration: none;
+    color:black;
+    width: 40%;
+    display: inline-block;
+    height: 40px;
+}
+
+.like_btn_in_post_more_info_popup{
+    margin: 10px;
+}
+
+.like_btn_in_post_more_info_popup:hover{ cursor: pointer; }
+.like_btn_in_post_more_info_popup img{ width: 7%; }
+.save_btn_in_post_more_info_popup:hover{ cursor: pointer; }
+.save_btn_in_post_more_info_popup img{ width: 7%; }
+.close_popup_btn img { width: 2em; }
+.close_popup_btn{
+    position: absolute;
+    left: 90%;
+    height: 100%;
+}
+.close_popup_btn:hover{
+    cursor: pointer;
+}
+
+.comments_div_in_popup_for_more_info{
+    position: relative;
+    width: 100%;
+    height: 80%;
+}
+
+.comments_write_block_in_popup{
+    position: absolute;
+    height: 10%;
+    width: 100%;
+    bottom: 0.1em;
+    
+}
+
+.comments_write_block_in_popup input[type='text']{
+    width: 80%;
+    height: 90%;
+    display: inline-block;
+}
+.comments_write_block_in_popup input[type='button']{
+    width: 15%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}

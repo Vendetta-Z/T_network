@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include "header.html" %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for u in users %}
+        <p>{{u}} <a onclick="subscribe_to_btn('{{u.id}}')" >подписаться</a></p>
+    {% endfor %}
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	function subscribe_to_btn(user_id){
+		$.ajax({
+                type:'POST',
+                data: {'user_id': user_id, csrfmiddlewaretoken: '{{csrf_token}}' },
+                url: "{% url 'subscibe_to' %}",
+                success: function(response){
+                    console.log(response)
+              }
+          })	
+	}
+</script>
+</html>
