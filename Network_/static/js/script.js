@@ -89,6 +89,21 @@ function view_more_about_post(post_id){
             $('.like_btn_in_post_more_info_popup').html((likes_len + '<img src="'+ data['like_icon'] +'"></img>'))
             $('.more_info_about_post__description').text(post[0]['fields']['description'])
             $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')')
+
+            comments = JSON.parse(data['comments'])
+            console.log(data)
+            for (var comm in comments){
+                console.log(comments[comm])
+                $('.comments_div_in_popup_for_more_info').html('')
+                $('.comments_div_in_popup_for_more_info').append(`
+                <div>
+                    <p>` + comments[comm]['fields']['author'] + `</p>
+                    <a>` + comments[comm]['fields']['text'] + `</a>
+                    <br>
+                    <a>` + comments[comm]['fields']['created'] + `</a>
+                    
+                </div> `)
+            }
         }   
     })
 }
@@ -124,13 +139,13 @@ function add_comment(post_id){
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         method:'POST',
         success:function(data){
-            comment = JSON.parse(data['comment'])
+            console.log(data)
             $('.comments_div_in_popup_for_more_info').append(`
             <div>
-                <p>` + comment[0]['fields']['author'] + `</p>
-                <a>` + comment[0]['fields']['text'] + `</a>
+                <p>` + data['author'] + `</p>
+                <a>` + data['text'] + `</a>
                 <br>
-                <a>` + comment[0]['fields']['created'] + `</a>
+                <a>` + data['created'] + `</a>
                 
             </div>
             `)

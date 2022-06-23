@@ -1,3 +1,4 @@
+from dataclasses import fields
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -7,6 +8,7 @@ class User(AbstractUser):
     status = models.CharField(max_length=120, default='fuck it\'s T_network', null=False)
     avatar = models.ImageField(upload_to='Network_/static/avatar/')
 
+    
 
 class UserFollowing(models.Model):
     user_id = models.ForeignKey(User , on_delete=models.CASCADE, related_name='subscribe_to')

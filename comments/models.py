@@ -1,3 +1,5 @@
+from dataclasses import fields
+from enum import auto
 from django.db import models
 from Network_.models import User, Posts
 
@@ -6,3 +8,6 @@ class Comments(models.Model):
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
     text = models.CharField(max_length=500)
     created = models.DateTimeField(auto_now=True)
+
+    class META:
+        fields = ['author', 'post', 'text', 'created']

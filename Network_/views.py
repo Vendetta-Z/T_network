@@ -3,6 +3,7 @@ from django.contrib.auth import logout, login
 from django.http import JsonResponse
 from django.core import serializers
 from Like.models import Like
+from comments.models import Comments
 
 from .models import User, UserFollowing, Posts
 
@@ -48,14 +49,17 @@ class T_network_views:
     def get_post(self):
         post = Posts.objects.get(id=self.GET.get('post_id'))
         post_likes_len = len(Like.objects.filter(product=post))
+        
         like_icon = "/static/image/likeHearthicon.png"
         if Like.check_user_liked(self, user=self.user, post=post):
             like_icon = "/static/image/likeHearthicon_after.png"
-
+        
+        post_comments =  Comments.objects.filter(post=post).values()
         return JsonResponse({
                 'post': serializers.serialize('json', [post]),
                 'Likes':post_likes_len,
                 'like_icon': like_icon,
+                'comments': serializers.serialize('json', post_comments)
             },
             safe=False
         )

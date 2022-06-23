@@ -1,5 +1,3 @@
-import code
-from itertools import product
 from django.http import JsonResponse
 from .models import Like
 
