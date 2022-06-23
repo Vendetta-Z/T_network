@@ -5,7 +5,10 @@ from django.core import serializers
 from Like.models import Like
 from comments.models import Comments
 
+from comments.serializers import CommentsSchema
+
 from .models import User, UserFollowing, Posts
+
 
 class T_network_views:
 
@@ -54,12 +57,16 @@ class T_network_views:
         if Like.check_user_liked(self, user=self.user, post=post):
             like_icon = "/static/image/likeHearthicon_after.png"
         
-        post_comments =  Comments.objects.filter(post=post).values()
+        post_comments =  Comments.objects.filter(post=post)
+        # Конвертация объектов класса Comments в json при помощи marshmallow
+        schema = CommentsSchema(many=True)
+        json_post_comments = schema.dump(post_comments)
+        
         return JsonResponse({
                 'post': serializers.serialize('json', [post]),
                 'Likes':post_likes_len,
                 'like_icon': like_icon,
-                'comments': serializers.serialize('json', post_comments)
+                'comments': json_post_comments
             },
             safe=False
         )

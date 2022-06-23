@@ -1,4 +1,3 @@
-from itertools import product
 from django.db import models
 
 from Network_.models import User, Posts

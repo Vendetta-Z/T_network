@@ -90,17 +90,24 @@ function view_more_about_post(post_id){
             $('.more_info_about_post__description').text(post[0]['fields']['description'])
             $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')')
 
-            comments = JSON.parse(data['comments'])
-            console.log(data)
+            comments = data['comments']
+
+
+            $('.comments_div_in_popup_for_more_info').html('')
             for (var comm in comments){
-                console.log(comments[comm])
-                $('.comments_div_in_popup_for_more_info').html('')
+                
+                comment_data = comments[comm]['created']
+                var comm_created_time = new Date(comment_data)
+                var now = new Date()
+                console.log(Math.abs(comment_data - now.getTime()))
+
+    
                 $('.comments_div_in_popup_for_more_info').append(`
                 <div>
-                    <p>` + comments[comm]['fields']['author'] + `</p>
-                    <a>` + comments[comm]['fields']['text'] + `</a>
+                    <p>` + comments[comm]['author'] + `</p>
+                    <a>` + comments[comm]['text'] + `</a>
                     <br>
-                    <a>` + comments[comm]['fields']['created'] + `</a>
+                    <a>` + comments[comm]['created'] + `</a>
                     
                 </div> `)
             }
