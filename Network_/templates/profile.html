@@ -12,7 +12,7 @@
     {%include "header.html"%}
 <div class="top_div">
     <div class="user_profile_picture">
-        <img src="{{user.avatar}}">
+        <img src="/{{user.avatar}}">
     </div>
     <div class="user_info_block">
         <a class="user_first_name">{{user.first_name}}</a><br>
@@ -28,7 +28,7 @@
 
 <div class="popup_for_more_about_post">
     <div class="description_and_image_in_popup">
-        <img class="more_info_about_post_block__img" src="{{user.avatar}}">
+        <img class="more_info_about_post_block__img" src="/{{user.avatar}}">
         <p class="more_info_about_post__description"> post description </p>
     </div>
     <div class="likes_and_comments_in_popup">
@@ -56,7 +56,7 @@
     <div class="posts">
         {% for post in posts %}
             <div class="block_with_posts" onclick="view_more_about_post('{{post.id}}')">
-                <img src="{{post.image}}">
+                <img src="/{{post.image}}">
                 <h4>{{post.description}}</h4>
                 <!-- <div class="post_like_and_save_btn_div">
                     <a class="post_likes_count"><img src="/static/image/likeHearthicon.png"></a>

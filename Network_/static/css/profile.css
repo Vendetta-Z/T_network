@@ -159,12 +159,12 @@ body{
     display: none;
     width: 60%;
     height: 70vh;
-    background-color: red;
     position: fixed;
     left: 25em ;
     top: 10em;
     border: 4px solid rgb(66, 65, 65);
     border-radius:5px;
+    z-index: 9999999;
 }
 
 .description_and_image_in_popup{

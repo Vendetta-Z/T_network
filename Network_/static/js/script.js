@@ -63,7 +63,7 @@ function send_data_for_create_new_post(){
 
             var posts = JSON.parse(data)
             console.log(posts)
-            var post = '<div class="block_with_posts">'
+            var post = '<div class="block_with_posts" onclick="view_more_about_post(' + posts[0]['pk'] + ')">'
                             +'<img src="'+ posts[0]['fields']['image'] +'">'
                             +'<h4>'+ posts[0]['fields']['description'] +'</h4>'
                         +'</div>'
@@ -72,6 +72,8 @@ function send_data_for_create_new_post(){
         }
     })
 }   
+
+
 
 function view_more_about_post(post_id){
     $('.popup_for_more_about_post').css('display', 'block')
@@ -86,34 +88,27 @@ function view_more_about_post(post_id){
             likes_len = data['Likes']
             $('.more_info_about_post_block__img').attr('src', post[0]['fields']['image'])
             $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')')
-            $('.like_btn_in_post_more_info_popup').html((likes_len + '<img src="'+ data['like_icon'] +'"></img>'))
+            $('.like_btn_in_post_more_info_popup').html(likes_len + '<img src="'+ data['like_icon'] +'"></img>')
             $('.more_info_about_post__description').text(post[0]['fields']['description'])
             $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')')
-
-            comments = data['comments']
-
+            $('.publiation_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author'])
+            $('.publiation_author_link').text( data['author'])
 
             $('.comments_div_in_popup_for_more_info').html('')
+            comments = data['comments']
             for (var comm in comments){
-                
-                comment_data = comments[comm]['created']
-                var comm_created_time = new Date(comment_data)
-                var now = new Date()
-                console.log(Math.abs(comment_data - now.getTime()))
-
-    
                 $('.comments_div_in_popup_for_more_info').append(`
                 <div>
-                    <p>` + comments[comm]['author'] + `</p>
-                    <a>` + comments[comm]['text'] + `</a>
-                    <br>
-                    <a>` + comments[comm]['created'] + `</a>
-                    
-                </div> `)
+                    <p>Автор:  ` + comments[comm]['author'] + `</p>
+                    <a>Текст комментария: ` + comments[comm]['text'] + `</a>
+                    <p>--------------------------------</p>
+                </div> `
+                )
             }
         }   
     })
 }
+
 
 // Закрытие окна с информацией о посте 
 $('#close_post_more_info_popup_').click(function(){
@@ -151,9 +146,7 @@ function add_comment(post_id){
             <div>
                 <p>` + data['author'] + `</p>
                 <a>` + data['text'] + `</a>
-                <br>
-                <a>` + data['created'] + `</a>
-                
+                <p>--------------------------------</p>
             </div>
             `)
         }

@@ -1,13 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout, login
+from django.contrib.auth import logout
 from django.http import JsonResponse
-from django.core import serializers
-from Like.models import Like
-from comments.models import Comments
 
-from comments.serializers import CommentsSchema
+from .services import T_network_services
 
-from .models import User, UserFollowing, Posts
+from .models import User, Posts
 
 
 class T_network_views:
@@ -17,12 +14,7 @@ class T_network_views:
         if self.GET:
             username = self.GET.get('firstName')
             password = self.GET.get('password')
-            user = User.objects.get(first_name=username, password=password)
-            if user:
-                login(self, user)
-                return redirect('/profile')
-            else:
-                return JsonResponse({'response': 404, 'message': 404})
+            T_network_services.Check_user_exist_and_login(self, username, password)
 
         return render(self, 'login.html')
 
@@ -30,70 +22,60 @@ class T_network_views:
         if self.user.is_authenticated is False:
             return redirect('/login')
 
-        user_subscribers = UserFollowing.objects.filter(following_user=self.user)
-        user_subscribes = UserFollowing.objects.filter(user_id=self.user)
-        return render(self, 'profile.html', {
-            'user': self.user,
-            'subscribes': len(user_subscribes),
-            'subscribers': len(user_subscribers),
-            'posts': Posts.objects.filter(avtor=self.user).order_by('-created')
+        user_profile_data = T_network_services.get_user_profile_data(self)
+        return render(
+            self,
+            'profile.html',
+            user_profile_data
+            )
 
-        })
+    def get_user_profile(self, id):
+        user_by_id =  User.objects.get(id=id)
+        
+        user_profile_data = T_network_services.get_another_user_profile(self, user_by_id)
 
+        return render(self, 'profile.html', user_profile_data)
+  
+
+
+
+            
     def logout(self):
         logout(self)
         return render(self, 'login.html')
 
     def publication_feed(self):
-        users = User.objects.all() 
-
-        return render(self, 'publication_feed.html', {'users': users})
+        #TODO перенести всю бизнес логику ленты публикаций в сервисы
+        publication = Posts.objects.all().order_by('-created')
+        return render(self, 'publication_feed.html', 
+            {
+                'publication_list': publication,
+            }
+        )
 
     def get_post(self):
-        post = Posts.objects.get(id=self.GET.get('post_id'))
-        post_likes_len = len(Like.objects.filter(product=post))
+        post_id = self.GET.get('post_id')
+        post_data = T_network_services.get_post_data(self, post_id=post_id)
         
-        like_icon = "/static/image/likeHearthicon.png"
-        if Like.check_user_liked(self, user=self.user, post=post):
-            like_icon = "/static/image/likeHearthicon_after.png"
-        
-        post_comments =  Comments.objects.filter(post=post)
-        # Конвертация объектов класса Comments в json при помощи marshmallow
-        schema = CommentsSchema(many=True)
-        json_post_comments = schema.dump(post_comments)
-        
-        return JsonResponse({
-                'post': serializers.serialize('json', [post]),
-                'Likes':post_likes_len,
-                'like_icon': like_icon,
-                'comments': json_post_comments
-            },
+        return JsonResponse( 
+            post_data,
             safe=False
         )
 
     def get_user_subscribes(self):
-        subs = UserFollowing.objects.filter(user_id=self.user)
-
+        subs = T_network_services.get_user_subscribes_data(self)
         return render(self, 'user_subscribes.html', {'subscribes': subs})
 
     def subscribe(self):
         if self.POST:
             user_id = self.POST.get('user_id')
-            subscribed_to_user = User.objects.get(id=user_id)
-            if UserFollowing.objects.filter(user_id=self.user, following_user=subscribed_to_user):
-                return JsonResponse('вы уже подписались на этого пользователя!', safe=False)
-            else:
-                UserFollowing.objects.create(
-                    user_id=self.user,
-                    following_user=subscribed_to_user,
-                )
+            T_network_services.subscribe_user(self, user_id=user_id)
             return JsonResponse('successfull subscribed!', safe=False)
 
     def unsubscribe(self):
         if self.POST:
             subscribe_id = self.POST.get('subscribe_id')
-            UserFollowing.unsubscribe(self, subscribe_id)
-            return JsonResponse({'status_code':200})
+            return T_network_services.unsubscribe_user(self, subscribe_id=subscribe_id)
         return redirect('/publication_feed')
 
 
@@ -101,16 +83,5 @@ class T_network_views:
         postImage = self.FILES['postImage']
         postDescription = self.POST.get('postDescription')
         
-
-        Post = Posts(
-            avtor=self.user,
-            image=postImage,
-            description=postDescription
-            )
-        Post.save()
-        # Post.avtor = self.user
-        # Post.image = postImage
-        # Post.description = postDescription 
-        # Post.save()
-        lastAddedPost = Post
-        return JsonResponse(serializers.serialize('json', [Post]), safe=False)
+        Post = T_network_services.create_new_post(self, postImage, postDescription)
+        return JsonResponse(Post, safe=False)

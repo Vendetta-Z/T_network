@@ -4,11 +4,53 @@
     {% include "header.html" %}
     <meta charset="UTF-8">
     <title>Title</title>
+
+	<link rel="stylesheet" href="/static/css/profile.css">
+    <link rel="stylesheet" href="/static/css/pub_feed.css">
 </head>
 <body>
-    {% for u in users %}
-        <p>{{u}} <a onclick="subscribe_to_btn('{{u.id}}')" >подписаться</a></p>
-    {% endfor %}
+
+    <div class="popup_for_more_about_post">
+        <div class="publication_author_block">
+            <a id="link_in_pub_to_avtor_profile" class="publiation_author_link"><!--Автор публикации --></a>
+            <a id="">Подписаться</a>
+        </div>
+        <div class="description_and_image_in_popup">    
+            <img class="more_info_about_post_block__img" src="{{user.avatar}}">
+            <p class="more_info_about_post__description"> post description </p>
+        </div>
+        <div class="likes_and_comments_in_popup">
+            <div class="buttons_in_popup ">
+                <a class="like_btn_in_post_more_info_popup"><img src="/static/image/likeHearthicon.png"></a>
+                <a class="save_btn_in_post_more_info_popup"><img src="/static/image/postSaveIcon.png"></a>
+                <a class="close_popup_btn" id="close_post_more_info_popup_"><img src="/static/image/closeIcon.png"></a>
+    
+            </div>
+            <div class="comments_div_in_popup_for_more_info">
+                <!-- <div>
+                    <h1>Комментарии</h1>
+                    <p>Автор</p>
+                    <a>Lorem ipsum dolor sit amet.</a>
+                </div> -->
+                <!-- тут будут комменты -->
+            </div>
+            <div class="comments_write_block_in_popup">
+                <input class="comment_text_input" type="text" placeholder="Оставьте комментарий">
+                <input class="add_comment_btn" type="button" name="" value=">" onclick="add_comment()">
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="main_publication_block">
+        {% for publication in publication_list %}
+        <div class="publications_block_in_pub_feed" onclick="view_more_about_post('{{publication.id}}')">
+            <img src="{{publication.image}}">
+            <h4>{{publication.description}}</h4>
+        </div>
+        {% endfor %}
+    </div>
+    
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -23,4 +65,7 @@
           })	
 	}
 </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="\static\js\script.js" type="text/javascript"></script>
 </html>

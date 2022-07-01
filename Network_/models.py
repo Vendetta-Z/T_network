@@ -1,4 +1,5 @@
 from dataclasses import fields
+from pydoc import describe
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -20,7 +21,7 @@ class UserFollowing(models.Model):
 
 
 class Posts(models.Model):
-    avtor = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=350)
     image = models.ImageField(upload_to='Network_/static/publication_image')
     created = models.DateTimeField(auto_now=True)

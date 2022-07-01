@@ -1,0 +1,60 @@
+.main_publication_block{
+    width: 90%;
+    height: auto;
+    margin:20px;
+    background-color: white;
+}
+
+.publication_author_block{
+    background-color: white;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.publiation_author_link{
+    display: inline-block;
+    font-size: 2em;
+    text-decoration: none;
+    color:black;
+    margin: 10px;
+    padding-bottom:none ;
+}
+
+.publiation_author_link:hover{
+    cursor: pointer;
+    border-bottom: 2px solid black;
+    transition: 0.4s;
+}
+
+.publications_block_in_pub_feed{
+    position: relative;
+    width: 80%;
+    height: 29em;
+    padding: 10px;
+    background-color: grey;
+    margin: 20px auto;
+}
+
+.publications_block_in_pub_feed:hover{
+    cursor: pointer;
+}
+
+.publications_block_in_pub_feed img{
+    position: absolute;
+    width: 75%;
+    max-height:28em ;
+    display: inline-block;
+    margin: 10px ;
+}
+
+.publications_block_in_pub_feed h4{
+    position: absolute;
+    right: 0;
+    margin: 10px;
+    background-color: rgb(182, 182, 182);
+    width: 21%;
+    height: 91%;
+    word-wrap: break-word;
+    display: inline-block;
+}
