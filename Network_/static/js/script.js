@@ -116,6 +116,23 @@ $('#close_post_more_info_popup_').click(function(){
 })
 
 
+
+
+
+
+
+$('.submenu_btn_in_post_more_info_popup').click(function(){
+    let a = 0
+    if(a === 0){
+        $('.publication_submenu_block').css('display', 'none')
+        a = 1
+    }
+    if(a === 1){
+        $('.publication_submenu_block').css('display', 'block')
+        a = 0
+    }
+})
+
 function adding_like_for_post(post_id){
     $.ajax({
         url:'Like/add_like',
