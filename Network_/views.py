@@ -31,15 +31,15 @@ class T_network_views:
 
     def get_user_profile(self, id):
         user_by_id =  User.objects.get(id=id)
-        
+
         user_profile_data = T_network_services.get_another_user_profile(self, user_by_id)
 
         return render(self, 'profile.html', user_profile_data)
-  
 
 
 
-            
+
+
     def logout(self):
         logout(self)
         return render(self, 'login.html')
@@ -47,7 +47,7 @@ class T_network_views:
     def publication_feed(self):
         #TODO перенести всю бизнес логику ленты публикаций в сервисы
         publication = Posts.objects.all().order_by('-created')
-        return render(self, 'publication_feed.html', 
+        return render(self, 'publication_feed.html',
             {
                 'publication_list': publication,
             }
@@ -56,8 +56,8 @@ class T_network_views:
     def get_post(self):
         post_id = self.GET.get('post_id')
         post_data = T_network_services.get_post_data(self, post_id=post_id)
-        
-        return JsonResponse( 
+
+        return JsonResponse(
             post_data,
             safe=False
         )
@@ -82,6 +82,19 @@ class T_network_views:
     def create_post(self):
         postImage = self.FILES['postImage']
         postDescription = self.POST.get('postDescription')
-        
+
         Post = T_network_services.create_new_post(self, postImage, postDescription)
         return JsonResponse(Post, safe=False)
+
+    def change_post_data(self):
+        print(self.POST)
+        print(self.POST)
+        print(self.POST)
+        print(self)
+        print(self)
+        print(self.FILES)
+
+        post_id = self.POST['post_id']
+        post_description = self.POST['post_description']
+        post_image = self.FILES['post_image']
+        return T_network_services.change_post_data(post_id, post_description, post_image)

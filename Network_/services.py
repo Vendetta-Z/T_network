@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.core import serializers
 
 from .models import User, Posts, UserFollowing
-from .serializers import PostsSchema
 
 from comments.serializers import CommentsSchema
 from comments.models import Comments
@@ -64,7 +63,7 @@ class T_network_services:
             'comments': json_post_comments
         }
 
-    
+
     def get_user_subscribes_data(self):
         UserFollowing.objects.filter(user_id=self.user)
 
@@ -92,3 +91,14 @@ class T_network_services:
         Post.save()
 
         return serializers.serialize('json', [Post])
+
+    def change_post_data(post_id, post_desc, post_img):
+        post_by_id = Posts.objects.get(id=post_id)
+        post_by_id.description = post_desc
+        post_by_id.image = post_img
+
+        try:
+            post_by_id.save()
+            return JsonResponse('200' , safe=False)
+        except:
+            return JsonResponse('500', safe=False)

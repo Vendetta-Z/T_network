@@ -1,9 +1,14 @@
-function new_post_popup(){
+function new_post_popup(header='Новый пост',description_text, post_image, url_to_send_data='send_data_for_create_new_post()'){
     x = 1;
     div_create_post = document.getElementsByClassName('create_new_post_main_div');
     div_cover = document.getElementsByClassName('new_post_button_background_cover')
-    
+
     if (x === 1){
+        $('.new_post_popup_header').text(header);
+        $('.new_post_popup_textarea').text(description_text);
+        $('.send_data_btn_new_post_popup').attr('onclick', url_to_send_data);
+        $('.post_image_in_new_post_popup').attr('value', post_image);
+
         $('.create_new_post_main_div').css('display','block');
         $('.new_post_button_background_cover').css('display','block');
         x = 0;
@@ -36,11 +41,11 @@ function getCookie(name) {
 }
 
 function send_data_for_create_new_post(){
-    postImage = document.getElementById('post_image').files[0]
+    postImage = document.getElementById('post_image_in_new_post_popup_id').files[0]
     postDescription = document.getElementById('description_textarea_for_new_post').value
 
     var formdata = new FormData()
-    formdata.append('postImage', postImage); 
+    formdata.append('postImage', postImage);
     formdata.append('postDescription', postDescription);
 
     $.ajax({
@@ -51,7 +56,7 @@ function send_data_for_create_new_post(){
         headers: { "X-CSRFToken": getCookie("csrftoken") },
         data:formdata,
         success: function(data){
-            
+
             $('.create_new_post_main_div').css('display','none');
             $('.new_post_button_background_cover').css('display','none');
 
@@ -71,7 +76,7 @@ function send_data_for_create_new_post(){
 
         }
     })
-}   
+}
 
 
 
@@ -93,7 +98,7 @@ function view_more_about_post(post_id){
             $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')')
             $('.publiation_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author'])
             $('.publiation_author_link').text( data['author'])
-
+            $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')')
             $('.comments_div_in_popup_for_more_info').html('')
             comments = data['comments']
             for (var comm in comments){
@@ -105,12 +110,12 @@ function view_more_about_post(post_id){
                 </div> `
                 )
             }
-        }   
+        }
     })
 }
 
 
-// Закрытие окна с информацией о посте 
+// Закрытие окна с информацией о посте
 $('#close_post_more_info_popup_').click(function(){
     $('.popup_for_more_about_post').css('display', 'none')
 })
@@ -168,4 +173,56 @@ function add_comment(post_id){
             `)
         }
     })
-}    
+}
+
+
+
+
+
+function change_post_data(post_id){
+    $('#close_post_more_info_popup_').click();
+    $.ajax({
+        url:'get_post',
+        headers: { "X-CSRFToken": getCookie("csrftoken")},
+        data:{'post_id':post_id},
+        method:'GET',
+        success: function(data){
+            post_data = JSON.parse(data['post']);
+
+            new_post_popup(
+                header='Изменение поста',
+                description_text = post_data[0]['fields']['description'],
+                post_image = post_data[0]['fields']['image'],
+                url_to_send_data = 'send_changed_data_to_back('+ post_data[0]['pk'] +')',
+                );
+
+        }
+    })
+}
+
+function send_changed_data_to_back(post_id){
+    post_description = $('.new_post_popup_textarea').val();
+    post_image = $('.post_image_in_new_post_popup')[0].files[0];
+
+    var formData = new FormData();
+    formData.append('post_id',post_id);
+    formData.append('post_description',post_description);
+    formData.append('post_image', post_image);
+
+    $.ajax({
+        url:'change_post_data',
+        type: 'POST',
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+        headers: { "X-CSRFToken": getCookie("csrftoken")},
+        method:'POST',
+
+        success: function(data){
+            console.log('yes')
+        }
+    })
+}
