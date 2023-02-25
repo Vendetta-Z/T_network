@@ -1,9 +1,11 @@
-function new_post_popup(header='Новый пост',description_text, post_image, url_to_send_data='send_data_for_create_new_post()'){
+
+function new_post_popup(header='Новый пост',description_text, post_image, url_to_send_data='send_data_for_create_new_post()', author){
     x = 1;
     div_create_post = document.getElementsByClassName('create_new_post_main_div');
     div_cover = document.getElementsByClassName('new_post_button_background_cover')
 
     if (x === 1){
+        $('.post_author').text(author)
         $('.new_post_popup_header').text(header);
         $('.new_post_popup_textarea').text(description_text);
         $('.send_data_btn_new_post_popup').attr('onclick', url_to_send_data);
@@ -67,7 +69,6 @@ function send_data_for_create_new_post(){
             }, 2000);
 
             var posts = JSON.parse(data)
-            console.log(posts)
             var post = '<div class="block_with_posts" onclick="view_more_about_post(' + posts[0]['pk'] + ')">'
                             +'<img src="'+ posts[0]['fields']['image'] +'">'
                             +'<h4>'+ posts[0]['fields']['description'] +'</h4>'
@@ -194,16 +195,32 @@ function change_post_data(post_id){
                 description_text = post_data[0]['fields']['description'],
                 post_image = post_data[0]['fields']['image'],
                 url_to_send_data = 'send_changed_data_to_back('+ post_data[0]['pk'] +')',
+                author = post_data[0]['fields']['author']
                 );
 
         }
     })
 }
 
+function load_user_posts(author){
+
+    $.ajax({
+        url:'get_user_posts',
+        type: 'GET',
+        headers: { "X-CSRFToken": getCookie("csrftoken")},
+        data:{'post_author': author},
+        success: (data) => {
+            console.log("fuck");
+            console.log(data);
+        }
+    })
+
+}
+
 function send_changed_data_to_back(post_id){
     post_description = $('.new_post_popup_textarea').val();
     post_image = $('.post_image_in_new_post_popup')[0].files[0];
-
+    post_author = $('.post_author')[0]['lastChild'].data;
     var formData = new FormData();
     formData.append('post_id',post_id);
     formData.append('post_description',post_description);
@@ -211,9 +228,8 @@ function send_changed_data_to_back(post_id){
 
     $.ajax({
         url:'change_post_data',
-        type: 'POST',
+        method: 'POST',
         data: formData,
-        async: false,
         cache: false,
         contentType: false,
         enctype: 'multipart/form-data',
@@ -222,7 +238,7 @@ function send_changed_data_to_back(post_id){
         method:'POST',
 
         success: function(data){
-            console.log('yes')
+            load_user_posts(post_author);
         }
     })
 }

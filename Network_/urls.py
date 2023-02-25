@@ -15,8 +15,10 @@ urlpatterns = [
     path('user_subscribes', T_network_views.get_user_subscribes, name='user_subscribes'),
     path('unsubscribe', T_network_views.unsubscribe, name='unsubscribe'),
     path('get_post', T_network_views.get_post, name='get_post'),
+    path('get_user_posts', T_network_views.get_user_posts, name='get_all_user_posts'),
     path('change_post_data', T_network_views.change_post_data, name='change_post_data'),
     path('create_new_post', T_network_views.create_post, name='create_new_post'),
+
 
     path('Like/' , include('Like.urls')),
     path('Comments/', include('comments.urls'))

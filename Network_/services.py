@@ -78,6 +78,10 @@ class T_network_services:
                 following_user=subscribed_to_user,
             )
 
+    def get_user_posts(self, post_autor):
+        post_list = Posts.objects.filter(author= post_autor)
+        return serializers.serialize('json', post_list)
+
     def unsubscribe_user(self, subscribe_id):
         UserFollowing.unsubscribe(self, subscribe_id)
         return JsonResponse({'status_code':200})

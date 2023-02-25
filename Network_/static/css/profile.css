@@ -10,6 +10,9 @@ body{
     background-color:grey;
 }
 
+.post_author{
+    display: none;
+}
 .user_profile_picture{
     width: 20%;
     height: 180px;
@@ -263,7 +266,7 @@ body{
     height: 10%;
     width: 100%;
     bottom: 0.1em;
-    
+
 }
 
 .comments_write_block_in_popup input[type='text']{

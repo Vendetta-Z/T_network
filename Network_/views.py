@@ -37,8 +37,11 @@ class T_network_views:
         return render(self, 'profile.html', user_profile_data)
 
 
-
-
+    def get_user_posts(self):
+        author_id = self.GET.get('post_author')
+        print(self)
+        posts = T_network_services.get_user_posts(self, author_id)
+        return JsonResponse(posts, safe=False)
 
     def logout(self):
         logout(self)
@@ -87,13 +90,6 @@ class T_network_views:
         return JsonResponse(Post, safe=False)
 
     def change_post_data(self):
-        print(self.POST)
-        print(self.POST)
-        print(self.POST)
-        print(self)
-        print(self)
-        print(self.FILES)
-
         post_id = self.POST['post_id']
         post_description = self.POST['post_description']
         post_image = self.FILES['post_image']
