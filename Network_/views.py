@@ -39,7 +39,6 @@ class T_network_views:
 
     def get_user_posts(self):
         author_id = self.GET.get('post_author')
-        print(self)
         posts = T_network_services.get_user_posts(self, author_id)
         return JsonResponse(posts, safe=False)
 

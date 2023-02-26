@@ -210,8 +210,30 @@ function load_user_posts(author){
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         data:{'post_author': author},
         success: (data) => {
-            console.log("fuck");
-            console.log(data);
+            close_popup();
+            console.log(JSON .parse(data));
+        }
+    })
+
+}
+
+function refresh_changed_pub_in_profile(post_id){
+    publication_by_id = $('#user_publication_id_'+post_id)
+    pub_img = $('#image_for_post_id_'+post_id)
+    pub_text = $('#description_for_post_id_'+post_id)
+
+    $.ajax({
+        url:'get_post',
+        method: 'GET',
+        data: {'post_id': post_id},
+        enctype: 'multipart/form-data',
+        headers: { "X-CSRFToken": getCookie("csrftoken")},
+        success: (data) => {
+            post_data = JSON.parse(data['post'])
+            close_popup();
+            pub_img.attr('src', post_data[0]['fields']['image'])
+            pub_text.text(post_data[0]['fields']['description'])
+
         }
     })
 
@@ -220,7 +242,8 @@ function load_user_posts(author){
 function send_changed_data_to_back(post_id){
     post_description = $('.new_post_popup_textarea').val();
     post_image = $('.post_image_in_new_post_popup')[0].files[0];
-    post_author = $('.post_author')[0]['lastChild'].data;
+
+
     var formData = new FormData();
     formData.append('post_id',post_id);
     formData.append('post_description',post_description);
@@ -235,10 +258,9 @@ function send_changed_data_to_back(post_id){
         enctype: 'multipart/form-data',
         processData: false,
         headers: { "X-CSRFToken": getCookie("csrftoken")},
-        method:'POST',
 
         success: function(data){
-            load_user_posts(post_author);
+            refresh_changed_pub_in_profile(post_id);
         }
     })
 }

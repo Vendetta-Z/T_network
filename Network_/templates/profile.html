@@ -55,9 +55,9 @@
 
     <div class="posts">
         {% for post in posts %}
-            <div class="block_with_posts" onclick="view_more_about_post('{{post.id}}')">
-                <img src="/{{post.image}}">
-                <h4>{{post.description | truncatewords:6}}</h4>
+            <div class="block_with_posts" id="user_publication_id_{{post.id}}" onclick="view_more_about_post('{{post.id}}')">
+                <img id="image_for_post_id_{{post.id}}"  src="/{{post.image}}">
+                <h4 id="description_for_post_id_{{post.id}}">{{post.description | truncatewords:6}}</h4>
                 <!-- <div class="post_like_and_save_btn_div">
                     <a class="post_likes_count"><img src="/static/image/likeHearthicon.png"></a>
                     <a class="post_save_icon_btn"><img src="/static/image/postSaveIcon.png"></a>
