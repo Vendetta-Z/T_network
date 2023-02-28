@@ -37,7 +37,7 @@
             <a class="save_btn_in_post_more_info_popup"><img src="/static/image/postSaveIcon.png"></a>
             <a class="submenu_btn_in_post_more_info_popup"><img src="/static/image/submenu_icon.png"></a>
             <div class="publication_submenu_block">
-                <a href="#">Удалить</a>
+                <a href="#" id="delete_publication_btn">Удалить</a>
                 <a href="#" class="change_publication_data_btn" >Редактировать</a>
             </div>
             <a class="close_popup_btn" id="close_post_more_info_popup_"><img src="/static/image/closeIcon.png"></a>
@@ -55,7 +55,7 @@
 
     <div class="posts">
         {% for post in posts %}
-            <div class="block_with_posts" id="user_publication_id_{{post.id}}" onclick="view_more_about_post('{{post.id}}')">
+            <div class="block_with_posts" id="user_publication_id_{{post.id}}" onclick="view_more_about_post_in_profile('{{post.id}}')">
                 <img id="image_for_post_id_{{post.id}}"  src="/{{post.image}}">
                 <h4 id="description_for_post_id_{{post.id}}">{{post.description | truncatewords:6}}</h4>
                 <!-- <div class="post_like_and_save_btn_div">

@@ -16,7 +16,7 @@ class T_network_views:
             password = self.GET.get('password')
             T_network_services.Check_user_exist_and_login(self, username, password)
 
-        return render(self, 'login.html')
+        return redirect('/profile')
 
     def profile(self):
         if self.user.is_authenticated is False:
@@ -76,8 +76,8 @@ class T_network_views:
 
     def unsubscribe(self):
         if self.POST:
-            subscribe_id = self.POST.get('subscribe_id')
-            return T_network_services.unsubscribe_user(self, subscribe_id=subscribe_id)
+            following_user_id = self.POST.get('following_user_id')
+            return T_network_services.unsubscribe_user(self, following_user_id)
         return redirect('/publication_feed')
 
 

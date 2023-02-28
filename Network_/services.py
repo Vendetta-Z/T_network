@@ -1,13 +1,15 @@
 from django.http import JsonResponse
 from django.core import serializers
 
+from django.shortcuts import redirect
+
 from .models import User, Posts, UserFollowing
 
 from comments.serializers import CommentsSchema
 from comments.models import Comments
 
 from Like.models import Like
-
+from django.contrib.auth import login
 
 class T_network_services:
 
@@ -54,13 +56,23 @@ class T_network_services:
         schema = CommentsSchema(many=True)
         json_post_comments = schema.dump(post_comments)
 
+
+        self_user_follow_author = 0
+        follow = UserFollowing.objects.filter(user_id=self.user, following_user=post.author.id)
+        if len(follow) > 0:
+            self_user_follow_author = 1
+
+        print('=====================')
+        print(self_user_follow_author)
+
         return {
             'post': serializers.serialize('json', [post]),
             # 'author': serializers.serialize('json', [post.author]), возможно понадобиться!!!
             'author': post.author.first_name,
             'Likes':post_likes_len,
             'like_icon': like_icon,
-            'comments': json_post_comments
+            'comments': json_post_comments,
+            'self_user_follow_author': self_user_follow_author
         }
 
 
@@ -73,17 +85,18 @@ class T_network_services:
         if UserFollowing.objects.filter(user_id=self.user, following_user=subscribed_to_user):
             return JsonResponse('вы уже подписались на этого пользователя!', safe=False)
         else:
-            UserFollowing.objects.create(
+            newFollowingUser = UserFollowing(
                 user_id=self.user,
                 following_user=subscribed_to_user,
             )
+            newFollowingUser.save()
 
     def get_user_posts(self, post_autor):
         post_list = Posts.objects.filter(author= post_autor)
         return serializers.serialize('json', post_list)
 
-    def unsubscribe_user(self, subscribe_id):
-        UserFollowing.unsubscribe(self, subscribe_id)
+    def unsubscribe_user(self, following_user_id):
+        UserFollowing.unsubscribe(self, following_user_id)
         return JsonResponse({'status_code':200})
 
     def create_new_post(self, postImage, postDescription):
