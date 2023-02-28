@@ -100,6 +100,8 @@ function view_more_about_post_in_profile(post_id){
             $('.publiation_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author'])
             $('.publiation_author_link').text( data['author'])
             $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')')
+            $('.delete_publication_btn').attr('onclick', 'send_data_to_del_pub_('+ post[0]['pk'] +')' )
+
             $('.comments_div_in_popup_for_more_info').html('')
             comments = data['comments']
 
@@ -152,7 +154,6 @@ function view_more_about_post(post_id, status='profile' ){
             $('.publiation_author_link').text( data['author'])
             $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')')
             $('.comments_div_in_popup_for_more_info').html('')
-            $('#delete_publication_btn').attr('onclick', 'send_data_to_del_pub_('+ post[0]['pk'] +')' )
 
             if(status === 'feed'){
                 if (data['self_user_follow_author'] === 0){
@@ -197,28 +198,30 @@ function unsubscribe_user(post_author){
     })
 }
 
-// function send_data_to_del_pub_(publication_id){
-//     $.ajax({
-//         url:'get_user_posts',
-//         type: 'GET',
-//         headers: { "X-CSRFToken": getCookie("csrftoken")},
-//         data:{'post_author': author},
-//         success: (data) => {
-
-//         }
-//     })
-// }
+function send_data_to_del_pub_(publication_id){
+    $.ajax({
+        url:'delete_post',
+        type: 'POST',
+        headers: { "X-CSRFToken": getCookie("csrftoken")},
+        data:{'post_id': publication_id},
+        success: (data) => {
+            console.log('post deleted');
+            $('#user_publication_id_'+publication_id).remove();
+            $('.popup_for_more_about_post').css('display', 'none');
+        }
+    })
+}
 
 
 $('.submenu_btn_in_post_more_info_popup').click(function(){
     let a = 0
-    if(a === 0){
-        $('.publication_submenu_block').css('display', 'none')
-        a = 1
-    }
     if(a === 1){
-        $('.publication_submenu_block').css('display', 'block')
-        a = 0
+        $('.publication_submenu_block').css('display', 'none');
+        a = 0;
+    }
+    else{
+        $('.publication_submenu_block').css('display', 'block');
+        a = 1
     }
 })
 
@@ -247,7 +250,6 @@ function add_comment(post_id){
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         method:'POST',
         success:function(data){
-            console.log(data)
             $('.comments_div_in_popup_for_more_info').append(`
             <div>
                 <p>` + data['author'] + `</p>
@@ -294,7 +296,6 @@ function load_user_posts(author){
         data:{'post_author': author},
         success: (data) => {
             close_popup();
-            console.log(JSON .parse(data));
         }
     })
 

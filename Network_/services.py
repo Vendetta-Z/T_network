@@ -20,7 +20,7 @@ class T_network_services:
             login(self, user)
             return redirect('/profile')
         else:
-            return JsonResponse({'response': 404, 'message': 404})
+            return JsonResponse({'response': 404, 'message': 'Такой пользователь не найден'})
 
     def get_user_profile_data(self):
         user_subscribers = UserFollowing.objects.filter(following_user=self.user)
@@ -61,9 +61,6 @@ class T_network_services:
         follow = UserFollowing.objects.filter(user_id=self.user, following_user=post.author.id)
         if len(follow) > 0:
             self_user_follow_author = 1
-
-        print('=====================')
-        print(self_user_follow_author)
 
         return {
             'post': serializers.serialize('json', [post]),
@@ -119,3 +116,6 @@ class T_network_services:
             return JsonResponse('200' , safe=False)
         except:
             return JsonResponse('500', safe=False)
+
+    def delete_post(self, post_id):
+        Posts.objects.filter(author=self.user, id=post_id).delete()

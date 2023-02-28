@@ -93,3 +93,8 @@ class T_network_views:
         post_description = self.POST['post_description']
         post_image = self.FILES['post_image']
         return T_network_services.change_post_data(post_id, post_description, post_image)
+
+    def delete_post(self):
+        post_id = self.POST['post_id']
+        T_network_services.delete_post(self, post_id)
+        return JsonResponse('post succesfull deleted!', safe=False)

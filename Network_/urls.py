@@ -17,7 +17,7 @@ urlpatterns = [
     path('get_user_posts', T_network_views.get_user_posts, name='get_all_user_posts'),
     path('change_post_data', T_network_views.change_post_data, name='change_post_data'),
     path('create_new_post', T_network_views.create_post, name='create_new_post'),
-
+    path('delete_post', T_network_views.delete_post, name='delete post'),
     path('Like/' , include('Like.urls')),
     path('Comments/', include('comments.urls'))
 
