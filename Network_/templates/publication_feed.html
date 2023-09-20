@@ -5,39 +5,45 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <link rel="stylesheet" href="/static/css/profile.css">
     <link rel="stylesheet" href="/static/css/pub_feed.css">
 </head>
 <body>
 
     <div class="popup_for_more_about_post">
+            <!-- автор поста , кнопка закрытия поста , кнопка подписаться -->
         <div class="publication_author_block">
             <a id="link_in_pub_to_avtor_profile" class="publiation_author_link"><!--Автор публикации --></a>
+            <a class="close_popup_btn" onclick="close_popup_post()"><img src="/static/image/closeIcon.png"></a>
         </div>
+            <!-- описание и ищобржение поста  -->
         <div class="description_and_image_in_popup">
             <img class="more_info_about_post_block__img" src="{{user.avatar}}">
             <p class="more_info_about_post__description"> post description </p>
         </div>
+
         <div class="likes_and_comments_in_popup">
+            
+            <!-- блок с кнопками лайка,сохранения -->
             <div class="buttons_in_popup ">
                 <a class="like_btn_in_post_more_info_popup"><img src="/static/image/likeHearthicon.png"></a>
                 <a class="save_btn_in_post_more_info_popup"><img src="/static/image/postSaveIcon.png"></a>
-                <a class="close_popup_btn" id="close_post_more_info_popup_"><img src="/static/image/closeIcon.png"></a>
+            </div>
 
-            </div>
+             <!-- блок для вывода комментариев к посту -->
             <div class="comments_div_in_popup_for_more_info">
-                <!-- <div>
+                <div class="comment_div_in_publication_feed_post">
                     <h1>Комментарии</h1>
-                    <p>Автор</p>
-                    <a>Lorem ipsum dolor sit amet.</a>
-                </div> -->
-                <!-- тут будут комменты -->
+                    <p >Автор</p>
+                    <a class="comment_in_publication_feed_post">Lorem ipsum dolor sit amet.</a>
+                </div>
             </div>
+            <!-- блок с комментариями внутри окна с инфой о посте -->
             <div class="comments_write_block_in_popup">
                 <input class="comment_text_input" type="text" placeholder="Оставьте комментарий">
                 <input class="add_comment_btn" type="button" name="" value=">" onclick="add_comment()">
             </div>
         </div>
+
     </div>
 
 
@@ -45,7 +51,7 @@
         {% for publication in publication_list %}
         <div class="publications_block_in_pub_feed" onclick="view_more_about_post('{{publication.id}}' , 'feed')">
             <img src="{{publication.image}}">
-            <h4>{{publication.description}}</h4>
+            <h4 class="comment_in_publication_feed_post">{{publication.description}}</h4>
         </div>
         {% endfor %}
     </div>
@@ -54,8 +60,7 @@
 
 <script>
     // Закрытие окна с информацией о посте
-$('#close_post_more_info_popup_').click(function(){
-    $('.popup_for_more_about_post').css('display', 'none')
-})
+
 </script>
+
 </html>

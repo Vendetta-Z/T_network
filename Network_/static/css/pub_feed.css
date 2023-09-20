@@ -1,15 +1,17 @@
 .main_publication_block{
-    width: 90%;
+    width: 80em;
     height: auto;
-    margin:20px;
+    margin:5em auto;
     background-color: white;
 }
 
 .publication_author_block{
-    background-color: white;
+    background-color: rgb(129, 123, 123);
     position: absolute;
     top: 0;
-    width: 100%;
+    left: 0;
+    width: 95%;
+    margin: 0.5% auto;
 }
 
 .publiation_author_link{
@@ -29,8 +31,9 @@
 
 .publications_block_in_pub_feed{
     position: relative;
-    width: 80%;
-    height: 29em;
+    width: 25em;
+    height: 20em;
+    display: inline-block;
     padding: 10px;
     background-color: grey;
     margin: 20px auto;
@@ -42,19 +45,153 @@
 
 .publications_block_in_pub_feed img{
     position: absolute;
-    width: 75%;
+    width: 90%;
     max-height:28em ;
     display: inline-block;
-    margin: 10px ;
+    margin: 1em;
 }
 
 .publications_block_in_pub_feed h4{
     position: absolute;
-    right: 0;
-    margin: 10px;
+    top: 15em;
+    margin: 1em;
     background-color: rgb(182, 182, 182);
-    width: 21%;
-    height: 91%;
+    width: 23em;
+    height: 5em;
     word-wrap: break-word;
     display: inline-block;
+    overflow: hidden;
+}
+
+.more_info_about_post__description{
+    width: 40em;
+    height: 15em;
+    word-wrap: break-word;
+    overflow-y: scroll;
+}
+
+.popup_for_more_about_post{
+    display: none;
+    width: 80%;
+    height: 80%;
+    background-color: rgb(129, 123, 123);
+    padding: 5px;
+    position: fixed;
+    top: 10%;
+    left:  10%;
+    border: 4px solid black;
+    border-radius: 5px;
+    z-index: 9;
+    overflow: hidden;
+}
+
+.description_and_image_in_popup{
+    width: 70%;
+    position: absolute;
+    right: inherit;
+    top: 10%;
+}
+
+.description_and_image_in_popup a{
+    font-size: 20px;
+}
+
+.description_and_image_in_popup img{
+    width: 90%;
+}
+
+.likes_and_comments_in_popup{
+    position: absolute;
+    width: 30%;
+    height: 80%;
+    right: 2%;
+    top: 10%;
+    margin: 2.5% auto;
+}
+
+.buttons_in_popup{
+    position: aboslute;
+    height: 4em;
+    background-color: rgb(129, 123, 123);
+}
+
+.buttons_in_popup input{
+    text-decoration: none;
+    color:black;
+    display: inline-block;
+    height: 40px;
+}
+
+.like_btn_in_post_more_info_popup{
+    width: 20%;
+    display: inline-block;
+    position: absolute;
+    margin: 10px;
+
+}
+
+.save_btn_in_post_more_info_popup{
+    display: inline-block;
+    position: absolute;
+    left: 25%;
+    width: 15%;
+    margin: 10px;
+}
+
+.submenu_btn_in_post_more_info_popup{
+    display: inline-block;
+    position: absolute;
+    left: 75%;
+    width: 15%;
+    margin: 10px;
+}
+
+.comments_write_block_in_popup{
+    position: absolute;
+    width: 100%;
+    height: 8%;
+    top: 100%;
+}
+.comment_text_input{
+    width: 80%;
+    height: 50%;
+}
+.add_comment_btn{
+    width: 15%;
+    height: 75%;
+}
+
+.comments_div_in_popup_for_more_info{
+    background-color: rgb(231, 229, 229);
+    width: 100%;
+    height: 85%;
+    border: 2px solid black;
+    margin: 1em auto;
+    overflow-y:scroll;
+}
+.comment_div_in_publication_feed_post{ margin: 1em; }
+
+.comment_in_publication_feed_post{
+    word-wrap:break-word;
+}
+
+.like_btn_in_post_more_info_popup:hover{ cursor: pointer; }
+.like_btn_in_post_more_info_popup img{ 
+    width: 80%;
+    display: inline-block;
+ }
+.save_btn_in_post_more_info_popup:hover{ cursor: pointer; }
+.save_btn_in_post_more_info_popup img{ width: 100%; }
+.submenu_btn_in_post_more_info_popup a:hover{cursor: pointer;}
+.submenu_btn_in_post_more_info_popup img{ width: 100%;}
+.close_popup_btn img { width: 2em; }
+.close_popup_btn{
+    position: absolute;
+    font-size: 20px;
+    margin:5px 5px 5px 5px;
+    right: 0;
+    top: 0;
+}
+.close_popup_btn:hover{
+    cursor: pointer;
 }

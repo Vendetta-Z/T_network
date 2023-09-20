@@ -1,5 +1,22 @@
-function new_post_popup(header='Новый пост',description_text, post_image, url_to_send_data='send_data_for_create_new_post()', author){
+const Scroll_Controler = {
+    DisableScrool(){
+        document.body.style.cssText = `
+        overflow:hidden;
+    `
+    },
+    EnableScrool(){
+        document.body.style.cssText = ''
+    }
+}
 
+$('#close_post_more_info_popup_').click(function(){
+    document.body.style.cssText = '';
+    $('.popup_for_more_about_post').css('display', 'none')
+    
+})
+
+function new_post_popup(header='Новый пост',description_text, post_image, url_to_send_data='send_data_for_create_new_post()', author){
+    Scroll_Controler.DisableScrool();
     $('.create_new_post_main_div').css('display','block');
     
     $('.post_author').text(author)
@@ -11,8 +28,10 @@ function new_post_popup(header='Новый пост',description_text, post_imag
     $('.post_image_in_new_post_popup').attr('value', post_image);
 }
 
+
 function close_popup(){
     $('.create_new_post_main_div').css('display','none');
+    Scroll_Controler.EnableScrool();
 }
 
 function getCookie(name) {
@@ -78,6 +97,7 @@ function send_data_for_create_new_post(){
 
 
 function view_more_about_post_in_profile(post_id){
+    Scroll_Controler.DisableScrool();
     $('.popup_for_more_about_post').css('display', 'block')
 
     $.ajax({
@@ -129,7 +149,11 @@ function subscribe_to_user(user_id){
 }
 
 
+
 function view_more_about_post(post_id, status='profile' ){
+    
+
+    Scroll_Controler.DisableScrool();
     $('.popup_for_more_about_post').css('display', 'block')
 
     $.ajax({
@@ -163,9 +187,9 @@ function view_more_about_post(post_id, status='profile' ){
             comments = data['comments']
             for (var comm in comments){
                 $('.comments_div_in_popup_for_more_info').append(`
-                <div>
+                <div class="comment_div_in_publication_feed_post">
                     <p>Автор:  ` + comments[comm]['author'] + `</p>
-                    <a>Текст комментария: ` + comments[comm]['text'] + `</a>
+                    <a class="comment_in_publication_feed_post">Текст комментария:<br/> ` + comments[comm]['text'] + `</a>
                     <p>--------------------------------</p>
                 </div> `
                 )
@@ -179,6 +203,7 @@ function view_more_about_post(post_id, status='profile' ){
 function close_popup_post(){
     $('.popup_for_more_about_post').css('display', 'none');
     $('.publication_submenu_block').css('display', 'none');
+    Scroll_Controler.EnableScrool();
 }
 
 
@@ -249,10 +274,10 @@ function add_comment(post_id){
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         method:'POST',
         success:function(data){
-            $('.comments_div_in_popup_for_more_info').append(`
-            <div>
-                <p>` + data['author'] + `</p>
-                <a>` + data['text'] + `</a>
+            $('.comment_div_in_publication_feed_post').append(`
+            <div class="comment_in_publication_feed_post">
+                <p>Автор:  ` + data['author'] + `</p>
+                <a class="comment_in_publication_feed_post"> Текст комментария:<br/> ` + data['text'] + `</a>
                 <p>--------------------------------</p>
             </div>
             `)
@@ -272,10 +297,6 @@ function open_sub_mune_in_post(){
 
     }
 }
-
-
-
-
 
 //изменение данных поста
 function change_post_data(post_id){
