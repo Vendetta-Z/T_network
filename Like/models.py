@@ -12,4 +12,7 @@ class Like(models.Model):
         if Like.objects.filter(author=user, product=post).count() == 0: 
             return False
         else:
-            return True        
+            return True  
+              
+    def get_likes_for_post(post):
+        return Like.objects.filter(product=post).count()

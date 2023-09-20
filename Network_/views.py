@@ -23,10 +23,11 @@ class T_network_views:
             return redirect('/login')
 
         user_profile_data = T_network_services.get_user_profile_data(self)
+
         return render(
             self,
-            'profile.html',
-            user_profile_data
+                'profile_copy.html',
+                user_profile_data
             )
 
     def get_user_profile(self, id):

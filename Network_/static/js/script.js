@@ -1,29 +1,18 @@
-
 function new_post_popup(header='Новый пост',description_text, post_image, url_to_send_data='send_data_for_create_new_post()', author){
-    x = 1;
-    div_create_post = document.getElementsByClassName('create_new_post_main_div');
-    div_cover = document.getElementsByClassName('new_post_button_background_cover')
 
-    if (x === 1){
-        $('.post_author').text(author)
-        $('.new_post_popup_header').text(header);
-        $('.new_post_popup_textarea').val(description_text);
-        $('.send_data_btn_new_post_popup').attr('onclick', url_to_send_data);
-        $('.post_image_in_new_post_popup').attr('value', post_image);
-
-        $('.create_new_post_main_div').css('display','block');
-        $('.new_post_button_background_cover').css('display','block');
-        x = 0;
-    }
-    else{
-        console.log('что-то с функцией открытия popup создание нового поста')
-    }
+    $('.create_new_post_main_div').css('display','block');
+    
+    $('.post_author').text(author)
+    $('.post_author').css('display','none')
+    
+    $('.new_post_popup_header').text(header);
+    $('.new_post_popup_textarea').val(description_text);
+    $('.send_data_btn_new_post_popup').attr('onclick', url_to_send_data);
+    $('.post_image_in_new_post_popup').attr('value', post_image);
 }
-
 
 function close_popup(){
     $('.create_new_post_main_div').css('display','none');
-    $('.new_post_button_background_cover').css('display','none');
 }
 
 function getCookie(name) {
@@ -68,12 +57,19 @@ function send_data_for_create_new_post(){
                 $('.notification_popup_main_div').css('display', 'none')
             }, 2000);
 
-            var posts = JSON.parse(data)
-            var post = '<div class="block_with_posts" onclick="view_more_about_post(' + posts[0]['pk'] + ')">'
-                            +'<img src="'+ posts[0]['fields']['image'] +'">'
-                            +'<h4>'+ posts[0]['fields']['description'] +'</h4>'
-                        +'</div>'
-            $('.posts').prepend(post)
+            var post = JSON.parse(data)
+            console.log(post)
+            var div_block_with_new_post = `
+            <div class="gallery-item post_id_` + post[0]['pk'] +`" tabindex="0" onclick="view_more_about_post_in_profile('`+ post[0]['pk'] +`')">
+                <img src="` + post[0]['fields']['image']  + `" class="gallery-image" alt="">
+                <div class="gallery-item-info">
+                    <ul>
+                        <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i></li>
+                        <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> </li>
+                    </ul>
+                </div>
+            </div>`
+            $('.gallery').prepend(div_block_with_new_post)
 
         }
     })
@@ -180,9 +176,11 @@ function view_more_about_post(post_id, status='profile' ){
 
 
 // Закрытие окна с информацией о посте
-$('#close_post_more_info_popup_').click(function(){
-    $('.popup_for_more_about_post').css('display', 'none')
-})
+function close_popup_post(){
+    $('.popup_for_more_about_post').css('display', 'none');
+    $('.publication_submenu_block').css('display', 'none');
+}
+
 
 
 function unsubscribe_user(post_author){
@@ -205,9 +203,10 @@ function send_data_to_del_pub_(publication_id){
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         data:{'post_id': publication_id},
         success: (data) => {
-            console.log('post deleted');
             $('#user_publication_id_'+publication_id).remove();
             $('.popup_for_more_about_post').css('display', 'none');
+            $('.publication_submenu_block').css('display', 'none');
+            $('.post_id_'+ publication_id).remove()
         }
     })
 }
@@ -261,12 +260,27 @@ function add_comment(post_id){
     })
 }
 
+var sub_menu_popup_count = 0;
+function open_sub_mune_in_post(){
+    if(sub_menu_popup_count === 0){
+        $('.publication_submenu_block').css('display', 'block');
+        sub_menu_popup_count ++;
+    }
+    else{
+    sub_menu_popup_count --;
+    $('.publication_submenu_block').css('display', 'none');
+
+    }
+}
 
 
 
 
+
+//изменение данных поста
 function change_post_data(post_id){
-    $('#close_post_more_info_popup_').click();
+    close_popup_post();//для закрытия popup'a с информацией о посте  
+    open_sub_mune_in_post();//для закрытия под-меню
     $.ajax({
         url:'get_post',
         headers: { "X-CSRFToken": getCookie("csrftoken")},
@@ -327,7 +341,7 @@ function send_changed_data_to_back(post_id){
     post_description = $('.new_post_popup_textarea').val();
     post_image = $('.post_image_in_new_post_popup')[0].files[0];
 
-
+    
     var formData = new FormData();
     formData.append('post_id',post_id);
     formData.append('post_description',post_description);

@@ -15,7 +15,7 @@ class T_network_services:
 
     def Check_user_exist_and_login(self, username, password):
 
-        user = User.objects.get(first_name=username, password=password)
+        user = User.objects.get(username=username, password=password)
         if user:
             login(self, user)
             return redirect('/profile')
@@ -25,12 +25,13 @@ class T_network_services:
     def get_user_profile_data(self):
         user_subscribers = UserFollowing.objects.filter(following_user=self.user)
         user_subscribes = UserFollowing.objects.filter(user_id=self.user)
-
+        
         return {
             'user': self.user,
             'subscribes': len(user_subscribes),
             'subscribers': len(user_subscribers),
             'posts': Posts.objects.filter(author=self.user).order_by('-created')
+
         }
 
     def get_another_user_profile(self, user):
