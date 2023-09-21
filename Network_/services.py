@@ -3,12 +3,11 @@ from django.core import serializers
 
 from django.shortcuts import redirect
 
-from .models import User, Posts, UserFollowing
-
-from comments.serializers import CommentsSchema
+from .models import User, Posts, UserFollowing, Saved_post
+from Like.models import Like
 from comments.models import Comments
 
-from Like.models import Like
+from comments.serializers import CommentsSchema
 from django.contrib.auth import login
 
 class T_network_services:
@@ -22,6 +21,7 @@ class T_network_services:
         else:
             return JsonResponse({'response': 404, 'message': 'Такой пользователь не найден'})
 
+
     def get_user_profile_data(self):
         user_subscribers = UserFollowing.objects.filter(following_user=self.user)
         user_subscribes = UserFollowing.objects.filter(user_id=self.user)
@@ -34,6 +34,7 @@ class T_network_services:
 
         }
 
+
     def get_another_user_profile(self, user):
         user_subscribers = UserFollowing.objects.filter(following_user=user)
         user_subscribes = UserFollowing.objects.filter(user_id=user.id)
@@ -44,6 +45,7 @@ class T_network_services:
             'subscribers': len(user_subscribers),
             'posts': Posts.objects.filter(author=user).order_by('-created')
         }
+
 
     def get_post_data(self, post_id):
         post = Posts.objects.get(id=post_id)
@@ -78,6 +80,21 @@ class T_network_services:
         UserFollowing.objects.filter(user_id=self.user)
 
 
+    def save_post_to_favorite(self, post_id):
+        post = Posts.objects.get(id=post_id)
+
+        Save_post = Saved_post(
+            user_saved_post = self.user,
+            save_post = post)
+        Save_post.save()
+        return JsonResponse('Post sucessfull saved!', safe=False)
+
+
+    def get_user_saved_posts(self):
+        
+        return Saved_post.objects.filter(user_saved_post=self.user)
+
+
     def subscribe_user(self, user_id):
         subscribed_to_user = User.objects.get(id=user_id)
         if UserFollowing.objects.filter(user_id=self.user, following_user=subscribed_to_user):
@@ -89,13 +106,16 @@ class T_network_services:
             )
             newFollowingUser.save()
 
+
     def get_user_posts(self, post_autor):
         post_list = Posts.objects.filter(author= post_autor)
         return serializers.serialize('json', post_list)
 
+
     def unsubscribe_user(self, following_user_id):
         UserFollowing.unsubscribe(self, following_user_id)
         return JsonResponse({'status_code':200})
+
 
     def create_new_post(self, postImage, postDescription):
         Post = Posts(
@@ -107,6 +127,7 @@ class T_network_services:
 
         return serializers.serialize('json', [Post])
 
+
     def change_post_data(post_id, post_desc, post_img):
         post_by_id = Posts.objects.get(id=post_id)
         post_by_id.description = post_desc
@@ -117,6 +138,7 @@ class T_network_services:
             return JsonResponse('200' , safe=False)
         except:
             return JsonResponse('500', safe=False)
+
 
     def delete_post(self, post_id):
         Posts.objects.filter(author=self.user, id=post_id).delete()

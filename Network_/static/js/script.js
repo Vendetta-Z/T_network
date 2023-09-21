@@ -101,19 +101,20 @@ function view_more_about_post_in_profile(post_id){
     $('.popup_for_more_about_post').css('display', 'block')
 
     $.ajax({
-        url:'get_post',
+        url:'/get_post',
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         data:{'post_id':post_id},
         method:'GET',
         success: function(data){
             post = JSON.parse(data['post'])
             likes_len = data['Likes']
-            $('.more_info_about_post_block__img').attr('src', post[0]['fields']['image'])
+            $('.more_info_about_post_block__img').attr('src', '/'+post[0]['fields']['image'])
             $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')')
             $('.like_btn_in_post_more_info_popup').html(likes_len + '<img src="'+ data['like_icon'] +'"></img>')
             $('.more_info_about_post__description').text(post[0]['fields']['description'])
             $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')')
             $('.publiation_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author'])
+            $('.save_btn_in_post_more_info_popup').attr('onclick', 'save_post_to_favorite('+ post[0]['pk']+')')
             $('.publiation_author_link').text( data['author'])
             $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')')
             $('.delete_publication_btn').attr('onclick', 'send_data_to_del_pub_('+ post[0]['pk'] +')' )
@@ -171,6 +172,7 @@ function view_more_about_post(post_id, status='profile' ){
             $('.more_info_about_post__description').text(post[0]['fields']['description'])
             $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')')
             $('.publiation_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author'])
+            $('.save_btn_in_post_more_info_popup').attr('onclick', 'save_post_to_favorite('+ post[0]['pk']+')')
             $('.publiation_author_link').text( data['author'])
             $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')')
             $('.comments_div_in_popup_for_more_info').html('')
@@ -251,7 +253,7 @@ $('.submenu_btn_in_post_more_info_popup').click(function(){
 
 function adding_like_for_post(post_id){
     $.ajax({
-        url:'Like/add_like',
+        url:'/Like/add_like',
         data:{'post_id': post_id},
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         method:'POST',
@@ -281,6 +283,18 @@ function add_comment(post_id){
                 <p>--------------------------------</p>
             </div>
             `)
+        }
+    })
+}
+
+function save_post_to_favorite(post_id){
+    $.ajax({
+        url:'Post/save_post',
+        data:{'saved_post_id': post_id},
+        headers: { "X-CSRFToken": getCookie("csrftoken")},
+        method:'POST',
+        success:function(data){
+            console.log(data);
         }
     })
 }

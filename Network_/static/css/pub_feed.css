@@ -110,7 +110,7 @@
 }
 
 .buttons_in_popup{
-    position: aboslute;
+    position: aboslute!important;
     height: 4em;
     background-color: rgb(129, 123, 123);
 }
@@ -123,10 +123,11 @@
 }
 
 .like_btn_in_post_more_info_popup{
-    width: 20%;
+    width: 3em;
     display: inline-block;
     position: absolute;
     margin: 10px;
+    background-color: rgb(129, 123, 123);
 
 }
 
@@ -134,7 +135,7 @@
     display: inline-block;
     position: absolute;
     left: 25%;
-    width: 15%;
+    width: 2.2em;
     margin: 10px;
 }
 

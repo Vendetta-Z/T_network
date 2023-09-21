@@ -4,7 +4,7 @@ from django.http import JsonResponse
 
 from .services import T_network_services
 
-from .models import User, Posts
+from .models import User, Posts, Saved_post
 
 
 class T_network_views:
@@ -36,6 +36,16 @@ class T_network_views:
         user_profile_data = T_network_services.get_another_user_profile(self, user_by_id)
 
         return render(self, 'profile.html', user_profile_data)
+
+    def save_post_view(self):
+        post_id = self.POST.get('saved_post_id')
+        return T_network_services.save_post_to_favorite(self, post_id)
+
+
+    def show_saved_views(self):
+        saved_posts = T_network_services.get_user_saved_posts(self)
+        print(saved_posts)
+        return render(self, 'favorite_saved_post.html', { 'saved_posts': saved_posts})
 
 
     def get_user_posts(self):

@@ -87,6 +87,7 @@
                             </ul>
 
                         </div>
+                        
 
                     </div>
                 {% endfor %}
@@ -99,33 +100,47 @@
 
     </main>
 
-    <!--  Popup for more about the publication -->
-        <div class="popup_for_more_about_post">
-            <div class="grid_position_in_popup_for_more_div">
+    <div class="popup_for_more_about_post">
+        <div class="grid_position_in_popup_for_more_div">
+    
+            <block class="author_and_subBtn_in_popup">
+                <a class="publiation_author_link">author</a>
+        <a class="close_popup_btn" onclick="close_popup_post()"><img src="/static/image/closeIcon.png" /></a>
 
-                <block class="author_and_subBtn_in_popup">
-                    <a class="publiation_author_link">author</a>
-                </block>
-                <!--  -->
-                <div class="img_and_description_in_popup">
-                    <img class="more_info_about_post_block__img">
-                    <h1>Описание поста</h1>
-                    <a class="more_info_about_post__description">название поста</a>
-                </div>
-                <!--  -->
-                <block class="like_comments_favorite_btns">
-                    <div class="buttons_in_popup ">
-                        <a class="like_btn_in_post_more_info_popup"><img src="/static/image/likeHearthicon.png"></a>
-                        <a class="save_btn_in_post_more_info_popup"><img src="/static/image/postSaveIcon.png"></a>
-                        <a class="submenu_btn_in_post_more_info_popup"  onclick="open_sub_mune_in_post()"><img src="/static/image/submenu_icon.png"></a>
-                        <div class="publication_submenu_block">
-                            <a  class="delete_publication_btn">Удалить</a>
-                            <a class="change_publication_data_btn" >Редактировать</a>
+            </block>
+            <!--  -->
+            <div class="img_and_description_in_popup">
+                <img class="more_info_about_post_block__img">
+                <h1>Описание поста</h1>
+                <a class="more_info_about_post__description">название поста</a>
+            </div>
+            <!--  -->
+            <block class="like_comments_favorite_btns">
+                <div class="buttons_in_popup ">
+                    <a class="like_btn_in_post_more_info_popup"><img src="/static/image/likeHearthicon.png"></a>
+                    <a class="save_btn_in_post_more_info_popup" onclick="save_post_to_favorite()"><img src="/static/image/postSaveIcon.png"></a>
+                    <a class="submenu_btn_in_post_more_info_popup"><img src="/static/image/submenu_icon.png"></a>
+                    <div class="publication_submenu_block">
+                        <a  class="delete_publication_btn">Удалить</a>
+                        <a class="change_publication_data_btn" >Редактировать</a>
+                    </div>
+    
+                    <div class="comments_div_in_popup_for_more_info">
+                        <div class="comment_div_in_publication_feed_post">
+                            <h1>Комментарии</h1>
+                            <p >Автор</p>
+                            <a class="comment_in_publication_feed_post">Lorem ipsum dolor sit amet.</a>
                         </div>
                     </div>
-                    
-                </block>
-            </div>
-            <a class="close_popup_btn" onclick="close_popup_post()"><img src="/static/image/closeIcon.png" /></a>
-        </div>        
+                    <!-- блок с комментариями внутри окна с инфой о посте -->
+                    <div class="comments_write_block_in_popup">
+                        <input class="comment_text_input" type="text" placeholder="Оставьте комментарий">
+                        <input class="add_comment_btn" type="button" name="" value=">" onclick="add_comment()">
+                    </div>
+    
+                </div>
+                
+            </block>
+        </div>
+    </div>     
 </html>
