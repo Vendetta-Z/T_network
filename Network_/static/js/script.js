@@ -15,6 +15,7 @@ $('#close_post_more_info_popup_').click(function(){
     
 })
 
+
 function new_post_popup(header='Новый пост',description_text, post_image, url_to_send_data='send_data_for_create_new_post()', author){
     Scroll_Controler.DisableScrool();
     $('.create_new_post_main_div').css('display','block');
@@ -29,10 +30,16 @@ function new_post_popup(header='Новый пост',description_text, post_imag
 }
 
 
+function delete_post_in_favorite(post_id){
+
+}
+
+
 function close_popup(){
     $('.create_new_post_main_div').css('display','none');
     Scroll_Controler.EnableScrool();
 }
+
 
 function getCookie(name) {
     let cookieValue = null;
@@ -49,6 +56,7 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 
 function send_data_for_create_new_post(){
     postImage = document.getElementById('post_image_in_new_post_popup_id').files[0]
@@ -95,47 +103,6 @@ function send_data_for_create_new_post(){
 }
 
 
-
-function view_more_about_post_in_profile(post_id){
-    Scroll_Controler.DisableScrool();
-    $('.popup_for_more_about_post').css('display', 'block')
-
-    $.ajax({
-        url:'/get_post',
-        headers: { "X-CSRFToken": getCookie("csrftoken")},
-        data:{'post_id':post_id},
-        method:'GET',
-        success: function(data){
-            post = JSON.parse(data['post'])
-            likes_len = data['Likes']
-            $('.more_info_about_post_block__img').attr('src', '/'+post[0]['fields']['image'])
-            $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')')
-            $('.like_btn_in_post_more_info_popup').html(likes_len + '<img src="'+ data['like_icon'] +'"></img>')
-            $('.more_info_about_post__description').text(post[0]['fields']['description'])
-            $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')')
-            $('.publiation_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author'])
-            $('.save_btn_in_post_more_info_popup').attr('onclick', 'save_post_to_favorite('+ post[0]['pk']+')')
-            $('.publiation_author_link').text( data['author'])
-            $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')')
-            $('.delete_publication_btn').attr('onclick', 'send_data_to_del_pub_('+ post[0]['pk'] +')' )
-
-            $('.comments_div_in_popup_for_more_info').html('')
-            comments = data['comments']
-
-            for (var comm in comments){
-                $('.comments_div_in_popup_for_more_info').append(`
-                <div>
-                    <p>Автор:  ` + comments[comm]['author'] + `</p>
-                    <a>Текст комментария: ` + comments[comm]['text'] + `</a>
-                    <p>--------------------------------</p>
-                </div> `
-                )
-            }
-        }
-    })
-}
-
-
 function subscribe_to_user(user_id){
     $.ajax({
         url:'subscribe',
@@ -150,54 +117,71 @@ function subscribe_to_user(user_id){
 }
 
 
-
-function view_more_about_post(post_id, status='profile' ){
-    
-
-    Scroll_Controler.DisableScrool();
-    $('.popup_for_more_about_post').css('display', 'block')
-
+function  open_popup_for_post(post_id, open_in_to){   
     $.ajax({
-        url:'get_post',
-        headers: { "X-CSRFToken": getCookie("csrftoken")},
-        data:{'post_id':post_id},
+        url:'/get_post',
+        headers: { "X-CSRFToken": getCookie("csrf_token")},
+        data:{'post_id': post_id},
         method:'GET',
+        contentType: 'application/json',
+        dataType:'json',
         success: function(data){
-            post = JSON.parse(data['post'])
-            likes_len = data['Likes']
-            $('#sub_unsub_to_user_btn').remove();
-            $('.more_info_about_post_block__img').attr('src', post[0]['fields']['image'])
-            $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')')
-            $('.like_btn_in_post_more_info_popup').html(likes_len + '<img src="'+ data['like_icon'] +'"></img>')
-            $('.more_info_about_post__description').text(post[0]['fields']['description'])
-            $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')')
-            $('.publiation_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author'])
-            $('.save_btn_in_post_more_info_popup').attr('onclick', 'save_post_to_favorite('+ post[0]['pk']+')')
-            $('.publiation_author_link').text( data['author'])
-            $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')')
-            $('.comments_div_in_popup_for_more_info').html('')
+        
+            
+        var comments = data['comments']
+        var post = JSON.parse(data['post'])
+        
 
-            if(status === 'feed'){
-                if (data['self_user_follow_author'] === 0){
-                    $('.publication_author_block').append('<a id="sub_unsub_to_user_btn" onclick="subscribe_to_user('+ post[0]['fields']['author'] +')">Подписаться</a>')
-                }
-                else{
-                    $('.publication_author_block').append('<a id="sub_unsub_to_user_btn" onclick="unsubscribe_user('+ post[0]['fields']['author'] +')">Отписаться</a>')
-                }
-            }
+        Scroll_Controler.DisableScrool();
+        $('.popup_for_more_about_post').css('display', 'block')
 
-            comments = data['comments']
-            for (var comm in comments){
-                $('.comments_div_in_popup_for_more_info').append(`
-                <div class="comment_div_in_publication_feed_post">
-                    <p>Автор:  ` + comments[comm]['author'] + `</p>
-                    <a class="comment_in_publication_feed_post">Текст комментария:<br/> ` + comments[comm]['text'] + `</a>
-                    <p>--------------------------------</p>
-                </div> `
-                )
-            }
+        $('.more_info_about_post_block__img').attr('src', '/'+ post[0]['fields']['image']),
+        $('.more_info_about_post__description').text(post[0]['fields']['description']),
+        $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')'),
+        $('.like_btn_in_post_more_info_popup').html(data['Likes'] + '<img src="'+ data['like_icon'] +'"></img>'),
+        $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')'),
+        $('.publication_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author']),
+        $('.publication_author_link').text( data['author']),
+        $('.save_btn_in_post_more_info_popup').attr('onclick', 'save_post_to_favorite('+ post[0]['pk']+')'),
+        $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')'),
+        $('.comments_div_in_popup_for_more_info').html('')  
+        $('.delete_publication_btn').attr('onclick', 'send_data_to_del_pub_('+ post[0]['pk'] +')')
+    
+        for (var comm in comments){
+            $('.comments_div_in_popup_for_more_info').append(`
+            <div class="comment_div_in_publication_feed_post">
+                <p>Автор:  ` + comments[comm]['author'] + `</p>
+                <a class="comment_in_publication_feed_post">Текст комментария:<br/> ` + comments[comm]['text'] + `</a>
+                <p>--------------------------------</p>
+            </div> `
+            )
         }
-    })
+
+        if(open_in_to === 'Pub_feed'){
+            // data_to_open_popup.push("$('#sub_unsub_to_user_btn').remove();")
+
+            if (data['self_user_follow_author'] === 0){
+                $('.sub_unsub_user_btn').attr('onclick' ,'subscribe_to_user('+ post[0]['fields']['author'] +')')
+                $('.sub_unsub_user_btn').text('Подписаться')
+            }
+            else{
+                $('.sub_unsub_user_btn').attr('onclick' ,'unsubscribe_user('+ post[0]['fields']['author'] +')')
+                $('.sub_unsub_user_btn').text('Отписаться')
+
+            }
+            
+        }
+        else if(open_in_to === 'pub_feed'){
+                $()
+                $('.submenu_btn_in_post_more_info_popup').remove();
+                $('.delete_publication_btn'),attr('onclick', 'remove_post_on_favorites');
+
+        }
+
+
+}
+})
+
 }
 
 
@@ -207,7 +191,6 @@ function close_popup_post(){
     $('.publication_submenu_block').css('display', 'none');
     Scroll_Controler.EnableScrool();
 }
-
 
 
 function unsubscribe_user(post_author){
@@ -239,17 +222,18 @@ function send_data_to_del_pub_(publication_id){
 }
 
 
-$('.submenu_btn_in_post_more_info_popup').click(function(){
-    let a = 0
-    if(a === 1){
-        $('.publication_submenu_block').css('display', 'none');
-        a = 0;
-    }
-    else{
-        $('.publication_submenu_block').css('display', 'block');
-        a = 1
-    }
-})
+// $('.submenu_btn_in_post_more_info_popup').click(function(){
+//     console.log('f')
+//     let a = 0
+//     if(a === 1){
+//         $('.publication_submenu_block').css('display', 'none');
+//         a = 0;
+//     }
+//     else{
+//         $('.publication_submenu_block').css('display', 'block');
+//         a = 1
+//     }
+// })
 
 function adding_like_for_post(post_id){
     $.ajax({
@@ -289,26 +273,30 @@ function add_comment(post_id){
 
 function save_post_to_favorite(post_id){
     $.ajax({
-        url:'Post/save_post',
+        url:'/Post/save_post',
         data:{'saved_post_id': post_id},
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         method:'POST',
         success:function(data){
-            console.log(data);
+            console.log(data)
+            if(data['post_status'] === 'removed'){
+                $('.saved_post_id_'+ post_id).remove();
+            }
         }
     })
 }
 
 var sub_menu_popup_count = 0;
-function open_sub_mune_in_post(){
+function open_sub_mune_in_post(open_in){
+
     if(sub_menu_popup_count === 0){
+
         $('.publication_submenu_block').css('display', 'block');
         sub_menu_popup_count ++;
     }
     else{
-    sub_menu_popup_count --;
-    $('.publication_submenu_block').css('display', 'none');
-
+        sub_menu_popup_count --;
+        $('.publication_submenu_block').css('display', 'none');
     }
 }
 

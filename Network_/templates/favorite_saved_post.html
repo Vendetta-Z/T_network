@@ -29,8 +29,7 @@
                 <a class="save_btn_in_post_more_info_popup" onclick="save_post_to_favorite()"><img src="/static/image/postSaveIcon.png"></a>
                 <a class="submenu_btn_in_post_more_info_popup"><img src="/static/image/submenu_icon.png"></a>
                 <div class="publication_submenu_block">
-                    <a  class="delete_publication_btn">Удалить</a>
-                    <a class="change_publication_data_btn" >Редактировать</a>
+                    <a  class="delete_publication_btn" on_click="delete_post_in_favorite()">Удалить</a>
                 </div>
 
                 <div class="comments_div_in_popup_for_more_info">
@@ -58,7 +57,7 @@
         {% include 'header.html' %}
     <div class="gallery">           
         {% for post in saved_posts %}
-            <div class="gallery-item post_id_{{post.save_post.id}}" tabindex="0" onclick="view_more_about_post_in_profile('{{post.save_post.id}}')">
+            <div class="gallery-item saved_post_id_{{post.save_post.id}}" tabindex="0" onclick="open_popup_for_post('{{post.save_post.id}}', 'pub_feed')">
 
                 <img src="{{post.save_post.image.url}}" class="gallery-image" alt="">
 

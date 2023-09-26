@@ -83,11 +83,17 @@ class T_network_services:
     def save_post_to_favorite(self, post_id):
         post = Posts.objects.get(id=post_id)
 
-        Save_post = Saved_post(
-            user_saved_post = self.user,
-            save_post = post)
-        Save_post.save()
-        return JsonResponse('Post sucessfull saved!', safe=False)
+        if Saved_post.objects.filter(save_post = post).exists():
+            Saved_post.objects.get(user_saved_post = self.user, save_post = post).delete()
+            return JsonResponse({'post_status': 'removed'}, safe=False)
+        else:
+            Save_post = Saved_post(
+                user_saved_post = self.user,
+                save_post = post
+                )
+            Save_post.save()
+            return JsonResponse({'post_status': 'saved'}, safe=False)
+
 
 
     def get_user_saved_posts(self):

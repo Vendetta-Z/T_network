@@ -12,8 +12,10 @@
     <div class="popup_for_more_about_post">
             <!-- автор поста , кнопка закрытия поста , кнопка подписаться -->
         <div class="publication_author_block">
-            <a id="link_in_pub_to_avtor_profile" class="publiation_author_link"><!--Автор публикации --></a>
+            <a id="link_in_pub_to_avtor_profile" class="publication_author_link"><!--Автор публикации --></a>
             <a class="close_popup_btn" onclick="close_popup_post()"><img src="/static/image/closeIcon.png"></a>
+            <a id="sub_unsub_to_user_btn" class="sub_unsub_user_btn"></a>
+
         </div>
             <!-- описание и ищобржение поста  -->
         <div class="description_and_image_in_popup">
@@ -49,7 +51,7 @@
 
     <div class="main_publication_block">
         {% for publication in publication_list %}
-        <div class="publications_block_in_pub_feed" onclick="view_more_about_post('{{publication.id}}' , 'feed')">
+        <div class="publications_block_in_pub_feed" onclick="open_popup_for_post('{{publication.id}}' , 'Pub_feed')">
             <img src="{{publication.image}}">
             <h4 class="comment_in_publication_feed_post">{{publication.description}}</h4>
         </div>

@@ -23,7 +23,9 @@ class Posts(models.Model):
     image = models.ImageField(upload_to='Network_/static/publication_image')
     created = models.DateTimeField(auto_now=True)
 
+
+
 class Saved_post(models.Model):
     user_saved_post = models.ForeignKey(User, on_delete=models.CASCADE)
-    save_post = models.ForeignKey(Posts, unique=True,on_delete=models.CASCADE)
+    save_post = models.OneToOneField(Posts, unique=True,on_delete=models.CASCADE)
     saved_time = models.DateTimeField(auto_now=True)

@@ -139,6 +139,10 @@
     margin: 10px;
 }
 
+.publication_author_link{
+    font-size: 3em;
+}
+
 .submenu_btn_in_post_more_info_popup{
     display: inline-block;
     position: absolute;

@@ -75,7 +75,7 @@
         <div class="container">
             <div class="gallery">           
                 {% for post in posts %}
-                    <div class="gallery-item post_id_{{post.id}}" tabindex="0" onclick="view_more_about_post_in_profile('{{post.id}}')">
+                    <div class="gallery-item post_id_{{post.id}}" tabindex="0" onclick="open_popup_for_post('{{post.id}}')">
 
                         <img src="{{post.image}}" class="gallery-image" alt="">
 
@@ -104,9 +104,8 @@
         <div class="grid_position_in_popup_for_more_div">
     
             <block class="author_and_subBtn_in_popup">
-                <a class="publiation_author_link">author</a>
-        <a class="close_popup_btn" onclick="close_popup_post()"><img src="/static/image/closeIcon.png" /></a>
-
+                <a class="publiation_author_link"></a>
+                <a class="close_popup_btn" onclick="close_popup_post()"><img src="/static/image/closeIcon.png" /></a>
             </block>
             <!--  -->
             <div class="img_and_description_in_popup">
@@ -119,7 +118,7 @@
                 <div class="buttons_in_popup ">
                     <a class="like_btn_in_post_more_info_popup"><img src="/static/image/likeHearthicon.png"></a>
                     <a class="save_btn_in_post_more_info_popup" onclick="save_post_to_favorite()"><img src="/static/image/postSaveIcon.png"></a>
-                    <a class="submenu_btn_in_post_more_info_popup"><img src="/static/image/submenu_icon.png"></a>
+                    <a class="submenu_btn_in_post_more_info_popup" onclick="open_sub_mune_in_post()"><img src="/static/image/submenu_icon.png"></a>
                     <div class="publication_submenu_block">
                         <a  class="delete_publication_btn">Удалить</a>
                         <a class="change_publication_data_btn" >Редактировать</a>
