@@ -58,6 +58,7 @@ function getCookie(name) {
 }
 
 
+
 function send_data_for_create_new_post(){
     postImage = document.getElementById('post_image_in_new_post_popup_id').files[0]
     postDescription = document.getElementById('description_textarea_for_new_post').value
@@ -130,18 +131,17 @@ function  open_popup_for_post(post_id, open_in_to){
             
         var comments = data['comments']
         var post = JSON.parse(data['post'])
-        
-
+        var author = JSON.parse(data['author'])
+        console.log(author)
         Scroll_Controler.DisableScrool();
         $('.popup_for_more_about_post').css('display', 'block')
-
         $('.more_info_about_post_block__img').attr('src', '/'+ post[0]['fields']['image']),
         $('.more_info_about_post__description').text(post[0]['fields']['description']),
         $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')'),
         $('.like_btn_in_post_more_info_popup').html(data['Likes'] + '<img src="'+ data['like_icon'] +'"></img>'),
         $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')'),
-        $('.publication_author_link').attr('href', 'get_user_profile/' + post[0]['fields']['author']),
-        $('.publication_author_link').text( data['author']),
+        $('.publication_author_link').attr('href', post[0]['fields']['author']),
+        $('.publication_author_link').text( author[0]['fields']['username']),
         $('.save_btn_in_post_more_info_popup').attr('onclick', 'save_post_to_favorite('+ post[0]['pk']+')'),
         $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')'),
         $('.comments_div_in_popup_for_more_info').html('')  
@@ -324,19 +324,19 @@ function change_post_data(post_id){
     })
 }
 
-function load_user_posts(author){
+// function load_user_posts(author){
 
-    $.ajax({
-        url:'get_user_posts',
-        type: 'GET',
-        headers: { "X-CSRFToken": getCookie("csrftoken")},
-        data:{'post_author': author},
-        success: (data) => {
-            close_popup();
-        }
-    })
+//     $.ajax({
+//         url:'get_user_posts',
+//         type: 'GET',
+//         headers: { "X-CSRFToken": getCookie("csrftoken")},
+//         data:{'post_author': author},
+//         success: (data) => {
+//             close_popup();
+//         }
+//     })
 
-}
+// }
 
 function refresh_changed_pub_in_profile(post_id){
     publication_by_id = $('#user_publication_id_'+post_id)

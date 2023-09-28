@@ -25,7 +25,7 @@ class T_network_services:
     def get_user_profile_data(self):
         user_subscribers = UserFollowing.objects.filter(following_user=self.user)
         user_subscribes = UserFollowing.objects.filter(user_id=self.user)
-        
+
         return {
             'user': self.user,
             'subscribes': len(user_subscribes),
@@ -67,8 +67,7 @@ class T_network_services:
 
         return {
             'post': serializers.serialize('json', [post]),
-            # 'author': serializers.serialize('json', [post.author]), возможно понадобиться!!!
-            'author': post.author.first_name,
+            'author': serializers.serialize('json', [post.author]),
             'Likes':post_likes_len,
             'like_icon': like_icon,
             'comments': json_post_comments,

@@ -4,24 +4,15 @@ from django.http import JsonResponse
 
 from .services import T_network_services
 
-from .models import User, Posts, Saved_post
+from .models import User, Posts
 
 
 class T_network_views:
 
-    def login(self):
-
-        if self.GET:
-            username = self.GET.get('firstName')
-            password = self.GET.get('password')
-            T_network_services.Check_user_exist_and_login(self, username, password)
-
-        return redirect('/profile')
-
     def profile(self):
         if self.user.is_authenticated is False:
-            return redirect('/login')
-
+            return render(self, 'login.html')
+        
         user_profile_data = T_network_services.get_user_profile_data(self)
 
         return render(
@@ -35,7 +26,9 @@ class T_network_views:
 
         user_profile_data = T_network_services.get_another_user_profile(self, user_by_id)
 
-        return render(self, 'profile.html', user_profile_data)
+
+
+        return render(self, 'profile_copy.html', user_profile_data)
 
     def save_post_view(self):
         post_id = self.POST.get('saved_post_id')
@@ -60,6 +53,7 @@ class T_network_views:
     def publication_feed(self):
         #TODO перенести всю бизнес логику ленты публикаций в сервисы
         publication = Posts.objects.all().order_by('-created')
+
         return render(self, 'publication_feed.html',
             {
                 'publication_list': publication,

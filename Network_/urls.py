@@ -5,10 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('login', T_network_views.login),
-    path('profile', T_network_views.profile),
-    path('', T_network_views.login),
-    path('get_user_profile/<int:id>', T_network_views.get_user_profile),
+    path('', T_network_views.profile),
+    path('<int:id>', T_network_views.get_user_profile),
     path('logout_user', T_network_views.logout),
     path('publication_feed', T_network_views.publication_feed),
     path('subscribe', T_network_views.subscribe, name='subscibe_to'),

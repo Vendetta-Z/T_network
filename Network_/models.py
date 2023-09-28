@@ -1,14 +1,17 @@
-from typing import Any
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+
+
 
 class User(AbstractUser):
-    status = models.CharField(max_length=120, default='fuck it\'s T_network', null=False)
-    avatar = models.ImageField(upload_to='Network_/static/avatar/')
-
+    status = models.CharField(max_length=120, default='Hi i\'m use a TarVin', null=False)
+    avatar = models.ImageField(blank=True, null=True, default='Network_/static/image/defaultavatar', upload_to='Network_/static/avatar')
+    
 
 
 class UserFollowing(models.Model):
+    
     user_id = models.ForeignKey(User , on_delete=models.CASCADE, related_name='subscribe_to')
     following_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscribed')
 

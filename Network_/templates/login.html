@@ -1,18 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="get" action="login">
-    {%csrf_token%}
-    <input name="firstName" placeholder="first name ">
-    <input name="password" type="password" placeholder="password ">
-
-
-    <input type="submit" value="Войти">
-
-</form>
-</body>
-</html>
+{% load socialaccount %}
+{% block content %}
+    ...
+    <button class="btn btn-outline-info">
+        <a href="{% provider_login_url 'google'%}?next=/">
+            <i class="fab fa-google"></i>
+            Login with Google
+        </a>
+    </button>
+    ...
+{% endblock content %}
