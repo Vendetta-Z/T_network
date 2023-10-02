@@ -12,6 +12,7 @@ from django.contrib.auth import login
 
 class T_network_services:
 
+
     def Check_user_exist_and_login(self, username, password):
 
         user = User.objects.get(username=username, password=password)
@@ -33,6 +34,23 @@ class T_network_services:
             'posts': Posts.objects.filter(author=self.user).order_by('-created')
 
         }
+
+
+    def change_user_data(self):
+        new_data_for_user = self.POST
+        user = User.objects.get(id=self.user.id)
+        for data in new_data_for_user:
+            if new_data_for_user[data] == 'csrfmiddlewaretoken' or new_data_for_user[data] == 'avatar':
+                print(self.POST)
+
+                continue
+            user.__dict__[data] = new_data_for_user[data]
+        print(self.FILES)
+        if self.FILES['avatar']:
+            user.__dict__['avatar'] = self.FILES['avatar']
+        user.save()
+
+        return redirect('/edit_profile')
 
 
     def get_another_user_profile(self, user):
@@ -133,16 +151,15 @@ class T_network_services:
         return serializers.serialize('json', [Post])
 
 
-    def change_post_data(post_id, post_desc, post_img):
-        post_by_id = Posts.objects.get(id=post_id)
-        post_by_id.description = post_desc
-        post_by_id.image = post_img
-
-        try:
-            post_by_id.save()
-            return JsonResponse('200' , safe=False)
-        except:
-            return JsonResponse('500', safe=False)
+    def change_post_data(Request_POST, request_FILES):
+        post_by_id = Posts.objects.get(id=Request_POST['id'])
+        post_by_id.__dict__['image'] = request_FILES
+        
+        for data in Request_POST:
+            post_by_id.__dict__[data] = Request_POST[data]
+    
+        post_by_id.save()
+        return JsonResponse('200' , safe=False)
 
 
     def delete_post(self, post_id):

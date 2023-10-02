@@ -83,5 +83,7 @@ target/
 __pycache__/
 local_settings.py
 
-.env
+env
 db.sqlite3
+Network_/static/publication_image
+Network_/static/avatar

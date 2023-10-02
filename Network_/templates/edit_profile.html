@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <link rel="stylesheet" href="static/css/login.css">
+
+    {% include 'header.html' %}
+        <div class="container">
+            <div class="frame">
+              <div class="nav">
+                <h2>Редактирование профиля {{ user.username }}</h2>
+              </div>
+              <div ng-app ng-init="checked = false">
+                <form method="post" action="/change_user_data" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="username">Никнейм</label>
+                    <input class="form-styling" type="text" name="username" id="username" value="{{user.username}}"/>
+        
+                    <label for="email">Email</label>
+                    <input class="form-styling" type="text" name="email" id="email" value="{{user.email}}"/>
+        
+                    <label for="first_name">Имя</label>
+                    <input class="form-styling" type="text" name="first_name" id="first_name" value="{{user.first_name}}"/>
+        
+                    <label for="last_name">Фамилия</label>
+                    <input class="form-styling" type="text" name="last_name" id="last_name" value="{{user.last_name}}"/>
+                    
+                    <a>аватарка пользователя  </a><input name="avatar"  type="file" accept="image/png, image/gif, image/jpeg" ><br/>
+                    <!-- <img src="{{user.avatar.src}}"> -->
+                    <button ng-click="checked = !checked" type="submit" class="btn-signup">Подтвердить изменения</button>
+                  </form>
+                  
+            </div>
+            </div>
+
+        
+</html>

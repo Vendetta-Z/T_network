@@ -1,6 +1,7 @@
 from django.db import models
 from Network_.models import User, Posts
 
+
 class CustomDateTimeField(models.DateTimeField):
     def value_to_string(self, obj) -> str:
         val = super().value_to_string(obj)

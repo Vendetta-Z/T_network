@@ -86,7 +86,7 @@ function send_data_for_create_new_post(){
             }, 2000);
 
             var post = JSON.parse(data)
-            console.log(post)
+
             var div_block_with_new_post = `
             <div class="gallery-item post_id_` + post[0]['pk'] +`" tabindex="0" onclick="view_more_about_post_in_profile('`+ post[0]['pk'] +`')">
                 <img src="` + post[0]['fields']['image']  + `" class="gallery-image" alt="">
@@ -132,7 +132,7 @@ function  open_popup_for_post(post_id, open_in_to){
         var comments = data['comments']
         var post = JSON.parse(data['post'])
         var author = JSON.parse(data['author'])
-        console.log(author)
+
         Scroll_Controler.DisableScrool();
         $('.popup_for_more_about_post').css('display', 'block')
         $('.more_info_about_post_block__img').attr('src', '/'+ post[0]['fields']['image']),
@@ -158,7 +158,8 @@ function  open_popup_for_post(post_id, open_in_to){
         }
 
         if(open_in_to === 'Pub_feed'){
-            // data_to_open_popup.push("$('#sub_unsub_to_user_btn').remove();")
+            $('.submenu_btn_in_post_more_info_popup').remove();
+            $('.delete_publication_btn'),attr('onclick', 'remove_post_on_favorites');
 
             if (data['self_user_follow_author'] === 0){
                 $('.sub_unsub_user_btn').attr('onclick' ,'subscribe_to_user('+ post[0]['fields']['author'] +')')
@@ -171,14 +172,6 @@ function  open_popup_for_post(post_id, open_in_to){
             }
             
         }
-        else if(open_in_to === 'pub_feed'){
-                $()
-                $('.submenu_btn_in_post_more_info_popup').remove();
-                $('.delete_publication_btn'),attr('onclick', 'remove_post_on_favorites');
-
-        }
-
-
 }
 })
 
@@ -223,7 +216,6 @@ function send_data_to_del_pub_(publication_id){
 
 
 // $('.submenu_btn_in_post_more_info_popup').click(function(){
-//     console.log('f')
 //     let a = 0
 //     if(a === 1){
 //         $('.publication_submenu_block').css('display', 'none');
@@ -278,7 +270,6 @@ function save_post_to_favorite(post_id){
         headers: { "X-CSRFToken": getCookie("csrftoken")},
         method:'POST',
         success:function(data){
-            console.log(data)
             if(data['post_status'] === 'removed'){
                 $('.saved_post_id_'+ post_id).remove();
             }

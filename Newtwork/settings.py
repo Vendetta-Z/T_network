@@ -3,15 +3,13 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o_s5hm#&+8&5c5lcl^!r(o80jlr52-27)kp1ga4t7^t(4ko!rq'
-
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
 os.path.join(BASE_DIR, 'Network_/staitc/css')
-# Application definition
+# Api_keys = os.environ['SECRET_KEY']
+SECRET_KEY='django-insecure-o_s5hm#&+8&5c5lcl^!r(o80jlr52-27)kp1ga4t7^t(4ko!rq'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -36,11 +34,13 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
+
+
+
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Additional configuration settings
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_LOGOUT_ON_GET= True
 ACCOUNT_UNIQUE_EMAIL = True
