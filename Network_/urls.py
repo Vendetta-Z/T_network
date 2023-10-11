@@ -12,7 +12,7 @@ urlpatterns = [
     path('edit_profile', T_network_views.edit_profile),
     path('logout_user', T_network_views.logout),
     path('publication_feed', T_network_views.publication_feed),
-  
+    path('publish_video', T_network_views.publish_video),
     path('subscribe', T_network_views.subscribe, name='subscibe_to'),
     path('user_subscribes', T_network_views.get_user_subscribes, name='user_subscribes'),
     path('unsubscribe', T_network_views.unsubscribe, name='unsubscribe'),

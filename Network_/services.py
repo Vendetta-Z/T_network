@@ -1,14 +1,15 @@
+from itertools import chain
 from django.http import JsonResponse
 from django.core import serializers
-
 from django.shortcuts import redirect
+from django.contrib.auth import login
 
 from .models import User, Posts, UserFollowing, Saved_post
 from Like.models import Like
 from comments.models import Comments
-
+from videosPost.views import VideoPostView
 from comments.serializers import CommentsSchema
-from django.contrib.auth import login
+
 
 class T_network_services:
 
@@ -26,12 +27,15 @@ class T_network_services:
     def get_user_profile_data(self):
         user_subscribers = UserFollowing.objects.filter(following_user=self.user)
         user_subscribes = UserFollowing.objects.filter(user_id=self.user)
-
+        postWithVideo = VideoPostView.getAllVideoByAuthor(self, self.user.id)
+        postWithoutVideo = Posts.objects.filter(author=self.user)
+        AllPostedPublication = list(chain(postWithoutVideo, postWithVideo))
+        
         return {
             'user': self.user,
             'subscribes': len(user_subscribes),
             'subscribers': len(user_subscribers),
-            'posts': Posts.objects.filter(author=self.user).order_by('-created')
+            'posts': AllPostedPublication
 
         }
 

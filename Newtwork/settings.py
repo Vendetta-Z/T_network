@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'Network_',
     'Like',
     'comments',
+    'videosPost',
 
     'allauth',
     'allauth.account',
@@ -125,5 +126,6 @@ USE_L10N = False
 USE_TZ = False 
 
 STATIC_URL = 'static/'
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

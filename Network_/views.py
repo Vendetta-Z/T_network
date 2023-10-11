@@ -115,3 +115,7 @@ class T_network_views:
         post_id = self.POST['post_id']
         T_network_services.delete_post(self, post_id)
         return JsonResponse('post succesfull deleted!', safe=False)
+    
+
+    def publish_video(self):
+        return render(self, 'publish_video.html')

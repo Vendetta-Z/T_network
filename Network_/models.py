@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 
 
-
 class User(AbstractUser):
     status = models.CharField(max_length=120, default='Hi i\'m use a TarVin', null=False)
     avatar = models.ImageField(default='image/default_avatar.png', upload_to='Network_/static/avatar')
@@ -40,3 +39,4 @@ class Saved_post(models.Model):
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
+

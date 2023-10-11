@@ -104,6 +104,23 @@ img {
     font-weight: 300;
 }
 
+.publish_video_btn{
+    right: 5%;
+    width: 30%;
+    height: 30%;
+    border: 4px solid grey;
+    border-radius: 5px;
+    padding: 1%;
+    text-align: center;
+    margin: 2.5% auto;
+    transition: 0.5s;
+    font-size: 1.5em;
+}
+
+.publish_video_btn a{
+    text-decoration: none;
+}
+
 .profile-edit-btn {
     font-size: 1.4rem;
     line-height: 1.8;

@@ -58,7 +58,6 @@ function getCookie(name) {
 }
 
 
-
 function send_data_for_create_new_post(){
     postImage = document.getElementById('post_image_in_new_post_popup_id').files[0]
     postDescription = document.getElementById('description_textarea_for_new_post').value
@@ -215,18 +214,6 @@ function send_data_to_del_pub_(publication_id){
 }
 
 
-// $('.submenu_btn_in_post_more_info_popup').click(function(){
-//     let a = 0
-//     if(a === 1){
-//         $('.publication_submenu_block').css('display', 'none');
-//         a = 0;
-//     }
-//     else{
-//         $('.publication_submenu_block').css('display', 'block');
-//         a = 1
-//     }
-// })
-
 function adding_like_for_post(post_id){
     $.ajax({
         url:'/Like/add_like',
@@ -243,6 +230,7 @@ function adding_like_for_post(post_id){
         }
     })
 }
+
 
 function add_comment(post_id){
     text = $('.comment_text_input').val()
@@ -263,6 +251,7 @@ function add_comment(post_id){
     })
 }
 
+
 function save_post_to_favorite(post_id){
     $.ajax({
         url:'/Post/save_post',
@@ -277,6 +266,7 @@ function save_post_to_favorite(post_id){
     })
 }
 
+
 var sub_menu_popup_count = 0;
 function open_sub_mune_in_post(open_in){
 
@@ -290,6 +280,7 @@ function open_sub_mune_in_post(open_in){
         $('.publication_submenu_block').css('display', 'none');
     }
 }
+
 
 //изменение данных поста
 function change_post_data(post_id){
@@ -315,19 +306,6 @@ function change_post_data(post_id){
     })
 }
 
-// function load_user_posts(author){
-
-//     $.ajax({
-//         url:'get_user_posts',
-//         type: 'GET',
-//         headers: { "X-CSRFToken": getCookie("csrftoken")},
-//         data:{'post_author': author},
-//         success: (data) => {
-//             close_popup();
-//         }
-//     })
-
-// }
 
 function refresh_changed_pub_in_profile(post_id){
     publication_by_id = $('#user_publication_id_'+post_id)
