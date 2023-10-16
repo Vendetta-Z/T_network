@@ -131,21 +131,37 @@ function  open_popup_for_post(post_id, open_in_to){
         var comments = data['comments']
         var post = JSON.parse(data['post'])
         var author = JSON.parse(data['author'])
-
+        
         Scroll_Controler.DisableScrool();
-        $('.popup_for_more_about_post').css('display', 'block')
-        $('.more_info_about_post_block__img').attr('src', '/'+ post[0]['fields']['image']),
-        $('.more_info_about_post__description').text(post[0]['fields']['description']),
-        $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')'),
-        $('.like_btn_in_post_more_info_popup').html(data['Likes'] + '<img src="'+ data['like_icon'] +'"></img>'),
-        $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')'),
-        $('.publication_author_link').attr('href', post[0]['fields']['author']),
-        $('.publication_author_link').text( author[0]['fields']['username']),
-        $('.save_btn_in_post_more_info_popup').attr('onclick', 'save_post_to_favorite('+ post[0]['pk']+')'),
-        $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')'),
-        $('.comments_div_in_popup_for_more_info').html('')  
-        $('.delete_publication_btn').attr('onclick', 'send_data_to_del_pub_('+ post[0]['pk'] +')')
-    
+        $('.popup_for_more_about_post').css('display', 'block');
+        $('.more_info_about_post__description').text(post[0]['fields']['description']);
+        $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')');
+        $('.like_btn_in_post_more_info_popup').html(data['Likes'] + '<img src="'+ data['like_icon'] +'"></img>');
+        $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')');
+        $('.publication_author_link').attr('href', post[0]['fields']['author']);
+        $('.publication_author_link').text( author[0]['fields']['username']);
+        $('.save_btn_in_post_more_info_popup').attr('onclick', 'save_post_to_favorite('+ post[0]['pk']+')');
+        $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')');
+        $('.comments_div_in_popup_for_more_info').html('');
+        $('.delete_publication_btn').attr('onclick', 'send_data_to_del_pub_('+ post[0]['pk'] +')');
+        
+        var PostMainFile =  post[0]['fields']['PostVidOrImg'];
+        var videoPlayerHtml = '<video class="postVideoPlayer" width="630" height="540" controls autoplay> <source id="videoSourceInPopipForMore" type="video/mp4"> </source> </video>'
+
+        if (PostMainFile.slice(-3) === 'mp4'){
+            $('.more_info_about_post_block__img').css('display', 'none');
+
+            $('.description_and_image_in_popup').prepend(videoPlayerHtml)
+            $('.img_and_description_in_popup').prepend(videoPlayerHtml)
+            $('#videoSourceInPopipForMore').attr('src', PostMainFile)
+        }
+        else{
+            $('.more_info_about_post_block__img').css('display', 'block');
+            $('.more_info_about_post_block__img').attr('src', '/'+ post[0]['fields']['PostVidOrImg'])
+
+        }
+        
+        
         for (var comm in comments){
             $('.comments_div_in_popup_for_more_info').append(`
             <div class="comment_div_in_publication_feed_post">
@@ -181,6 +197,7 @@ function  open_popup_for_post(post_id, open_in_to){
 function close_popup_post(){
     $('.popup_for_more_about_post').css('display', 'none');
     $('.publication_submenu_block').css('display', 'none');
+    $('.postVideoPlayer').remove();
     Scroll_Controler.EnableScrool();
 }
 

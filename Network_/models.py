@@ -1,7 +1,9 @@
-from typing import Any
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
+from django.core.validators import FileExtensionValidator
 
+from typing import Any
+import cv2
 
 class User(AbstractUser):
     status = models.CharField(max_length=120, default='Hi i\'m use a TarVin', null=False)
@@ -21,14 +23,53 @@ class UserFollowing(models.Model):
         user_subscribe.delete()
 
 
+
+
+
 class Posts(models.Model):
+    imageTypesForPost = ['jpeg','jpg', 'png']
+    videoTypesForPost = ['mp4']
+    allTypesForPost = str(imageTypesForPost) + str(videoTypesForPost)
+    
+    getFileUploadURL = f'Network_/static/PostData/{str(User())}'
+
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=350)
-    image = models.ImageField(upload_to='Network_/static/publication_image')
     created = models.DateTimeField(auto_now=True)
+    preview = models.ImageField( blank=True,upload_to=getFileUploadURL, max_length=528)
+    PostVidOrImg = models.FileField( upload_to=f'Network_/static/PostData/{str(User())}',
+                                    validators=[FileExtensionValidator(allowed_extensions=['jpeg','jpg', 'png','mp4'])])
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
+        if self.PostVidOrImg:
+            if self.PostVidOrImg.url[-3:] == 'mp4':
+                if self.preview == '':
+                    PostVideo = cv2.VideoCapture('Network_\static\PostData\igetda_6993987049812446466.mp4')
+                    img = PostVideo.read()[1]
+                    nameOfSavedPreview = (self.PostVidOrImg.url.split('.')[0] + 'PostPreview.jpg')[1:]
+                    cv2.imwrite(nameOfSavedPreview, img)
+                    self.preview = nameOfSavedPreview
+                
+        
+
+
+    def CheckTypeOfFile(self):
+        fileType = ''
+        filename = self.PostVidOrImg.name
+        try:
+            extension = filename.split('.')[-1]
+            if extension == 'mp4':
+                fileType = 'video'
+            else:
+                fileType = 'img'
+        except Exception :
+            fileType = 'incorrect'
+        
+        return fileType
+
+
 
 
 class Saved_post(models.Model):

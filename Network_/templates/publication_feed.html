@@ -52,7 +52,11 @@
     <div class="main_publication_block">
         {% for publication in publication_list %}
         <div class="publications_block_in_pub_feed" onclick="open_popup_for_post('{{publication.id}}' , 'Pub_feed')">
-            <img src="{{publication.image}}">
+            {% if publication.CheckTypeOfFile == 'video' %}
+                <img src="{{publication.priview.url}}" class="gallery-image" alt="">
+            {% elif publication.CheckTypeOfFile == 'img' %}
+            <img src="{{publication.PostVidOrImg}}">
+            {% endif %}
             <h4 class="comment_in_publication_feed_post">{{publication.description}}</h4>
         </div>
         {% endfor %}

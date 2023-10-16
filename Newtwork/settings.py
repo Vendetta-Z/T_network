@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'Network_',
     'Like',
     'comments',
-    'videosPost',
 
     'allauth',
     'allauth.account',

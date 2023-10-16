@@ -76,27 +76,28 @@
 
     <!--конец блока с кнопкой создания нового поста и самого блока с создания -->
     <main>
-
+   
         <div class="container">
             <div class="gallery">           
                 {% for post in posts %}
                     <div class="gallery-item post_id_{{post.id}}" tabindex="0" onclick="open_popup_for_post('{{post.id}}')">
-
-                        <img src="{{post.image}}" class="gallery-image" alt="">
-
-                        <div class="gallery-item-info">
-
-                            <ul>
-                                <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i></li>
-                                <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> </li>
-                            </ul>
-
-                        </div>
+                        {% if post.CheckTypeOfFile == 'video' %}
+                            <img src="{{post.preview}}" class="gallery-image" alt="" width="25%">
+                        {% elif post.CheckTypeOfFile == 'img' %}
+                            <img src="{{post.PostVidOrImg.url}}" class="gallery-image" alt="">
+                        {% endif %}
                         
+
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i></li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> </li>
+                        </ul>
 
                     </div>
                 {% endfor %}
-            </div>
+                    </div>
+
+        </div>
             
             <!-- End of gallery -->
 

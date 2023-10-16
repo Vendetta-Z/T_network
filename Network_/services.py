@@ -7,7 +7,6 @@ from django.contrib.auth import login
 from .models import User, Posts, UserFollowing, Saved_post
 from Like.models import Like
 from comments.models import Comments
-from videosPost.views import VideoPostView
 from comments.serializers import CommentsSchema
 
 
@@ -27,9 +26,8 @@ class T_network_services:
     def get_user_profile_data(self):
         user_subscribers = UserFollowing.objects.filter(following_user=self.user)
         user_subscribes = UserFollowing.objects.filter(user_id=self.user)
-        postWithVideo = VideoPostView.getAllVideoByAuthor(self, self.user.id)
         postWithoutVideo = Posts.objects.filter(author=self.user)
-        AllPostedPublication = list(chain(postWithoutVideo, postWithVideo))
+        AllPostedPublication = postWithoutVideo
         
         return {
             'user': self.user,
