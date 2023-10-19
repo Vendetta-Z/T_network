@@ -53,7 +53,7 @@
         {% for publication in publication_list %}
         <div class="publications_block_in_pub_feed" onclick="open_popup_for_post('{{publication.id}}' , 'Pub_feed')">
             {% if publication.CheckTypeOfFile == 'video' %}
-                <img src="{{publication.priview.url}}" class="gallery-image" alt="">
+                <img src="{{publication.preview.url}}" class="gallery-image" alt="">
             {% elif publication.CheckTypeOfFile == 'img' %}
             <img src="{{publication.PostVidOrImg}}">
             {% endif %}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{user.username}}</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="static/js/script.js"></script>
+    <link rel="stylesheet" href="..\static\css\profile_new.css">
+</head>
+    <body>
+        <navbar class="LeftBar">
+            <a href="/"><img src="Network_\static\icons\user-325.svg">Vendetta</a>
+            <a href="/publication_feed"><img src="Network_\static\icons\homepage-6104.svg">Главная</a>
+            <a href="/"><img src="Network_\static\icons\teamwork-and-two-black-person-18776.svg">Друзья</a>
+            <a href="/"><img src="Network_\static\icons\users-267.svg">подписчики</a>
+            <a href="/"><img src="Network_\static\icons\hand-cursor-1285.svg">подписки</a>
+            <a href="/"><img src="Network_\static\icons\zoom-logo-4478.svg">Мои Посты</a>
+        </navbar>
+        <block class="UserData_block">
+            <img src="{{user.avatar.url}}">
+            <h1  class="UserData_block_h1">{{user.username}}</h1>
+            <block class="UserData_block_h3">
+                <h3>ФИО: {{user.first_name}} {{user.last_name}}</h3>
+                <h3>Возраст: 19лет</h3>
+                <h3>Город: Грозный</h3>
+                <h3>подписчики: {{subscribers}}</h3>
+                <h3>Подписки: {{subscribes}}</h3>
+                <h3>Друзья: 2</h3>
+            </block>
+            <h4>{{user.status}} ommodo coin reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</h4>
+        </block>
+        <block class="AuthorPost">
+            {% for post in posts %}
+                {% if post.CheckTypeOfFile == 'video' %}
+                    <img onclick="open_popup_for_post('{{post.pk}}', 'profile')" src="{{post.preview}}">
+                {% elif post.CheckTypeOfFile == 'img' %}
+                    <img onclick="open_popup_for_post('{{post.pk}}', 'profile')" src="{{post.PostVidOrImg.url}}">
+                {% endif %}
+            {% endfor %}
+
+        </block>
+
+        <block class="PopUpForMoreAboutPost">
+            <img class="PopUpForMoreAboutPost__PostImg" >
+            <div class="PopUpForMoreAboutPost_AuthorInfoDiv">
+                <a class="PopUpForMoreAboutPost__Close">X</a>
+                <img src="{{user.avatar}}"/>
+                <h2 class="PopUpForMoreAboutPost__PostAuthor">{{user.username}}</h2>
+                <a class="PopUpForMoreAboutPost_AuthorInfoDiv__FollowBtn">follow</a>
+                <a class="PopUpForMoreAboutPost_AuthorInfoDiv__LikeBtn"><img class="PopUpForMoreAboutPost_AuthorInfoDiv__LikeBtn_img"></a>
+                <a class="PopUpForMoreAboutPost_AuthorInfoDiv__SaveBtn"><img src="Network_\static\icons\black-save-instagram-18316.svg"></a>
+            </div>
+
+
+            <div class="PopUpForMoreAboutPost__CommentsBlock">
+                <a class="PopUpForMoreAboutPost__PostDescription"></a>
+                
+            </div>
+        </block>
+    </body>
+</html>

@@ -15,6 +15,15 @@ $('#close_post_more_info_popup_').click(function(){
     
 })
 
+document.addEventListener('keydown', function (e) {
+    if(e.key === 'Escape'){
+        Scroll_Controler.EnableScrool();
+        $('.PopUpForMoreAboutPost').css('display', 'none');
+        $('.postVideoPlayer').remove();
+        $('.UserData_block').css('display', 'block');
+        $('.AuthorPost').css('display', 'block');
+    }
+  }); 
 
 function new_post_popup(header='Новый пост',description_text, post_image, url_to_send_data='send_data_for_create_new_post()', author){
     Scroll_Controler.DisableScrool();
@@ -131,12 +140,19 @@ function  open_popup_for_post(post_id, open_in_to){
         var comments = data['comments']
         var post = JSON.parse(data['post'])
         var author = JSON.parse(data['author'])
-        
+        var PostMainFile =  post[0]['fields']['PostVidOrImg'];
+        var videoPlayerHtml = '<video class="postVideoPlayer" width="630" height="540" controls autoplay> <source id="videoSourceInPopipForMore" type="video/mp4"> </source> </video>'
+       
         Scroll_Controler.DisableScrool();
-        $('.popup_for_more_about_post').css('display', 'block');
-        $('.more_info_about_post__description').text(post[0]['fields']['description']);
-        $('.like_btn_in_post_more_info_popup').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')');
-        $('.like_btn_in_post_more_info_popup').html(data['Likes'] + '<img src="'+ data['like_icon'] +'"></img>');
+        $('.UserData_block').css('display', 'none')
+        $('.AuthorPost').css('display', 'none')
+        $('.PopUpForMoreAboutPost').css('display', 'block');
+        $('.PopUpForMoreAboutPost__PostImg').attr('src', PostMainFile)
+        $('.PopUpForMoreAboutPost__PostAuthor').text(author[0]['fields']['username'])
+        $('.PopUpForMoreAboutPost__PostDescription').text(post[0]['fields']['description'])
+        $('.PopUpForMoreAboutPost_AuthorInfoDiv__LikeBtn').attr('onclick', 'adding_like_for_post(' + post[0]['pk'] + ')');
+        $('.PopUpForMoreAboutPost_AuthorInfoDiv__LikeBtn_img').attr('src',  data['like_icon'] );
+        
         $('.add_comment_btn').attr('onclick', 'add_comment('+ post[0]['pk'] +')');
         $('.publication_author_link').attr('href', post[0]['fields']['author']);
         $('.publication_author_link').text( author[0]['fields']['username']);
@@ -144,30 +160,27 @@ function  open_popup_for_post(post_id, open_in_to){
         $('.change_publication_data_btn').attr('onclick', 'change_post_data('+ post[0]['pk'] +')');
         $('.comments_div_in_popup_for_more_info').html('');
         $('.delete_publication_btn').attr('onclick', 'send_data_to_del_pub_('+ post[0]['pk'] +')');
-        
-        var PostMainFile =  post[0]['fields']['PostVidOrImg'];
-        var videoPlayerHtml = '<video class="postVideoPlayer" width="630" height="540" controls autoplay> <source id="videoSourceInPopipForMore" type="video/mp4"> </source> </video>'
+
 
         if (PostMainFile.slice(-3) === 'mp4'){
-            $('.more_info_about_post_block__img').css('display', 'none');
-
-            $('.description_and_image_in_popup').prepend(videoPlayerHtml)
-            $('.img_and_description_in_popup').prepend(videoPlayerHtml)
+            $('.PopUpForMoreAboutPost__PostImg').css('display', 'none');
+            $('.PopUpForMoreAboutPost').prepend(videoPlayerHtml)
             $('#videoSourceInPopipForMore').attr('src', PostMainFile)
         }
         else{
-            $('.more_info_about_post_block__img').css('display', 'block');
-            $('.more_info_about_post_block__img').attr('src', '/'+ post[0]['fields']['PostVidOrImg'])
+            $('.PopUpForMoreAboutPost__PostImg').css('display', 'block');
+            $('.PopUpForMoreAboutPost__PostImg').attr('src', '/'+ post[0]['fields']['PostVidOrImg'])
 
         }
         
         
         for (var comm in comments){
-            $('.comments_div_in_popup_for_more_info').append(`
-            <div class="comment_div_in_publication_feed_post">
-                <p>Автор:  ` + comments[comm]['author'] + `</p>
-                <a class="comment_in_publication_feed_post">Текст комментария:<br/> ` + comments[comm]['text'] + `</a>
-                <p>--------------------------------</p>
+            $('.PopUpForMoreAboutPost__CommentsBlock').append(`
+            <div class="PopUpForMoreAboutPost__CommentsBlock_comment">
+                <img class="PopUpForMoreAboutPost__CommentsBlock_comment_AuthorAvatar" src="` + comments[comm]['author']['avatar'] + `" />
+                <a class="PopUpForMoreAboutPost__CommentsBlock_comment_Author">` + comments[comm]['author'] + `</a>
+                <a class="PopUpForMoreAboutPost__CommentsBlock_comment_Created">12 december 23y</a>
+                <a class="PopUpForMoreAboutPost__CommentsBlock_comment_Text">`+ comments[comm]['text'] +`</a>
             </div> `
             )
         }

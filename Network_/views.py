@@ -19,7 +19,7 @@ class T_network_views:
 
         return render(
             self,
-                'profile_copy.html',
+                'profile.html',
                 user_profile_data
             )
 
