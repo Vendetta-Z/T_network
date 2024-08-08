@@ -6,6 +6,9 @@ __pycache__
 db.sqlite3
 media
 
+# Media project Files#
+PostData/
+
 # Backup files # 
 *.bak 
 
